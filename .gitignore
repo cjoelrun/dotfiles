@@ -21,4 +21,6 @@ tramp
 
 # elpa packages
 /elpa/
+
+# authentication
 authinfo
