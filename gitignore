@@ -1,0 +1,20 @@
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+.emacs.d/el-get
+.emacs.d/external
+.emacs.d/elpa
+.emacs.d/auto-save-list
+.emacs.d/image-dired
+.emacs.d/eshell
+.emacs.d/thumbs
+.emacs.d/url
