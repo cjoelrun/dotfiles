@@ -44,7 +44,7 @@ sshn() {
 
 export PYTHONPATH=$PYTHONPATH:~/work/jenkins-build/qa/modules/
 export BROWSER=google-chrome
-export EDITOR='emacs -nw -q'
+export EDITOR='emacsclient -nw'
 
 source `which virtualenvwrapper.sh`
 export WORKON_HOME=~/Envs
