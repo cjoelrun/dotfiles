@@ -345,7 +345,6 @@
 
 ;; (setq erc-autojoin-channels-alist
 ;;       '(("freenode.net" "#rcbops" "#pcqa" "#cloudcafe")
-(load "~/.ercpass")
 ;; (erc :server "irc.freenode.net" :port 6667 :nick "cjoelrun" :password easy-pass)
 ;; (erc-tls :server "pretentious.me" :port 6697 :nick "cjoelrun" :password hard-pass)
 ;; (erc :server "pretentious.me"
