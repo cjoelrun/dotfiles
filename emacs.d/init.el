@@ -32,15 +32,25 @@
 (setq inhibit-splash-screen t); no splash screen
 (column-number-mode 1)        ; column numbers in the mode line
 (setq fill-column 79)
-(unless (string-match "apple-darwin" system-configuration)
-  ;; on mac, there's always a menu bar drown, don't have it empty
-  (menu-bar-mode -1))
+(menu-bar-mode -1)
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(defun copy-from-osx ()
+  (shell-command-to-string "pbpaste"))
+
+(defun paste-to-osx (text &optional push)
+  (let ((process-connection-type nil))
+    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+      (process-send-string proc text)
+      (process-send-eof proc))))
 
 ;; choose your own fonts, in a system dependant way
 (if (string-match "apple-darwin" system-configuration)
-    (set-frame-font
-     "-apple-Inconsolata-medium-normal-normal-*-11-*-*-*-m-0-iso10646-1"))
+    (set-frame-font "-apple-Inconsolata-medium-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+  (setq interprogram-cut-function 'paste-to-osx)
+  (setq interprogram-paste-function 'copy-from-osx)
+  )
+
 (add-to-list 'default-frame-alist
              '(font . "-apple-Inconsolata-medium-normal-normal-*-11-*-*-*-m-0-iso10646-1"))
 
@@ -49,7 +59,7 @@
 ;; avoid compiz manager rendering bugs
 (add-to-list 'default-frame-alist '(alpha . 100))
 
-(display-battery-mode 1)
+;; (display-battery-mode 1)
 
 ;; Navigate windows with M-<arrows>
 (windmove-default-keybindings 'meta)
@@ -110,6 +120,12 @@
       (eval-print-last-sexp))
     (error "El-Get is not installed and we are unable to download it without an internet connection: cannot continue")))
 
+;; package repos
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
 ;; now either el-get is `require'd already, or have been `load'ed by the
 ;; el-get installer.
 (setq el-get-sources
@@ -123,7 +139,8 @@
         (:name magit-filenotify
                :type git
                :url "https://github.com/magit/magit-filenotify")
-        ))
+        (:name org :type elpa)
+        (:name jedi-direx :type elpa)))
 
 (setq my-el-get-packages
       (append
@@ -131,12 +148,6 @@
        (mapcar 'el-get-source-name el-get-sources)))
 
 (el-get 'sync my-el-get-packages)
-
-;; package repos
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 (setq my-packages
       '(ac-nrepl
@@ -169,6 +180,7 @@
         flymake-shell
         fuzzy
         gh
+        git-gutter
         gist
         grizzl
         haskell-mode
@@ -200,6 +212,7 @@
         pcache
         pkg-info
         popup
+        projectile
         request
         rhtml-mode
         rinari
@@ -271,7 +284,8 @@
 ;; linux
 (when (eq system-type 'gnu/linux)
   (setq browse-url-generic-program "/usr/bin/conkeror")
-)
+  (turn-on-xclip))
+
 ;; under mac, have Command as Meta and keep Option for localized input
 (when (string-match "apple-darwin" system-configuration)
   (setq browse-url-generic-program "open")
@@ -283,7 +297,7 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-;; company mode
+;; ;; company mode
 (require 'company)
 (setq company-idle-delay 0.3)
 (setq company-tooltip-limit 20)
@@ -483,22 +497,24 @@
 (setq magit-diff-refine-hunk t) ;show word-based diff for current hunk
 
 ;; git gutter
-(global-git-gutter+-mode t)
+(global-git-gutter-mode +1)
 (setq-default indicate-buffer-boundaries 'left)
 (setq-default indicate-empty-lines +1)
-(eval-after-load 'git-gutter+
+(eval-after-load 'git-gutter
   '(progn
      ;;; Jump between hunks
-     (define-key git-gutter+-mode-map (kbd "C-x n") 'git-gutter+-next-hunk)
-     (define-key git-gutter+-mode-map (kbd "C-x p") 'git-gutter+-previous-hunk)
-     ;;; Act on hunks
-     (define-key git-gutter+-mode-map (kbd "C-x v =") 'git-gutter+-show-hunk)
-     (define-key git-gutter+-mode-map (kbd "C-x v r") 'git-gutter+-revert-hunks)
-     ;; Stage hunk at point.
-     ;; If region is active, stage all hunk lines within the region.
-     (define-key git-gutter+-mode-map (kbd "C-x t") 'git-gutter+-stage-hunks)
-     (define-key git-gutter+-mode-map (kbd "C-x c") 'git-gutter+-commit)
-     (define-key git-gutter+-mode-map (kbd "C-x C") 'git-gutter+-stage-and-commit)))
+     (global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
+     (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+
+     ;; Jump to next/previous hunk
+     (global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
+     (global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+
+     ;; Stage current hunk
+     (global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
+
+     ;; Revert current hunk
+     (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)))
 
 ;; smart mode line
 (setq sml/vc-mode-show-backend t)
@@ -508,9 +524,6 @@
 ;; (set-face-attribute 'sml/folder nil :foreground "#f09fff")
 ;; (set-face-attribute 'sml/filename nil :foreground "#f6df92")
 ;; (set-face-attribute 'sml/vc-edited nil :foreground "#ff5f87")
-
-;; clipboard
-(turn-on-xclip)
 
 ;; python
 (elpy-enable)
@@ -541,7 +554,8 @@
 (setq flycheck-indication-mode 'left-fringe)
 
 ;; projectile
-(require 'projectile nil t)
+(projectile-global-mode)
+;; (require 'projectile nil t)
 (setq projectile-completion-system 'grizzl)
 
 ;; grizzl
