@@ -58,3 +58,6 @@ dracip() {
 sshn() {
     sshpass -p `knife node show $1 -a password | grep password | awk '{print $2}'` ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet -l root `knife node show $1 -a ipaddress | grep ipaddress| awk '{print $2}'`
 }
+novar() {
+        export OLD_REGION=$OS_REGION_NAME; for i in ORD DFW IAD HKG SYD; do export OS_REGION_NAME=$i; echo $OS_REGION_NAME; nova list; done; export OS_REGION_NAME=$OLD_REGION
+}
