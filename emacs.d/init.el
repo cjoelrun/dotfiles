@@ -616,6 +616,7 @@
 (setq uniquify-min-dir-content 2)
 
 ;; org-mode
+(setq org-export-with-sub-superscripts nil)
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
