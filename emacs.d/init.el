@@ -562,20 +562,20 @@
 (setq *grizzl-read-max-results* 30)
 
 ;; helm
-(require 'helm-config)
-(setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
-(helm-mode 1)
-(helm-gtags-mode 1)
-(helm-descbinds-mode)
-(setq helm-idle-delay 0.1)
-(setq helm-input-idle-delay 0.1)
-(setq helm-buffer-max-length 50)
-(setq helm-M-x-always-save-history t)
-(setq helm-buffer-details-flag nil)
-(add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
-(add-to-list 'helm-completing-read-handlers-alist '(org-agenda-refile)) ; same goes for org-agenda-refile
-(require 'helm-git)
-(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+;; (require 'helm-config)
+;; (setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
+;; (helm-mode 1)
+;; (helm-gtags-mode 1)
+;; (helm-descbinds-mode)
+;; (setq helm-idle-delay 0.1)
+;; (setq helm-input-idle-delay 0.1)
+;; (setq helm-buffer-max-length 50)
+;; (setq helm-M-x-always-save-history t)
+;; (setq helm-buffer-details-flag nil)
+;; (add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
+;; (add-to-list 'helm-completing-read-handlers-alist '(org-agenda-refile)) ; same goes for org-agenda-refile
+;; (require 'helm-git)
+;; (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 
 ;; save recently opened files
 (setq recentf-save-file (expand-file-name "~/.recentf"))

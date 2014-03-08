@@ -27,8 +27,8 @@ EDITOR="emacsclient -nw"
 BROWSER="conkeror"
 
 alias ls='ls -lhG'
-alias watch_razor="watch -n 5 -d 'ssh cameron@razor-chef \"razor active_model | wc -l ; razor active_model ; razor node | wc -l ; razor node\"'"
-alias watch_chef="watch -n 5 -d 'ssh cameron@razor-chef \"knife node list | wc -l ; knife node list\"'"
+alias watch_razor="watch -n 5 -d 'ssh cameron@razor \"razor active_model | wc -l ; razor active_model ; razor node | wc -l ; razor node\"'"
+alias watch_chef="watch -n 5 -d 'ssh cameron@razor \"knife node list | wc -l ; knife node list\"'"
 alias knife-personal='rm -rf .chef; ln -s ~/.chefs/personal ~/.chef'
 alias knife-qa='rm -rf .chef; ln -s ~/.chefs/qa ~/.chef'
 alias nodes='knife node list'

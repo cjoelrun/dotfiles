@@ -4,7 +4,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import Graphics.X11.ExtraTypes.XF86
-import XMonad.Actions.Volume
+-- import XMonad.Actions.Volume
 import System.IO
 import qualified XMonad.StackSet as W
 
@@ -33,7 +33,7 @@ main = do
         -- Brightness down
       , ((noModMask, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5")
         -- Mute
-      , ((noModMask, xF86XK_AudioMute), toggleMute >> return())
+      -- , ((noModMask, xF86XK_AudioMute), toggleMute >> return())
         -- Spotify Launch
       , ((noModMask, xF86XK_Tools), spawn "spotify")
         -- launch dmenu
