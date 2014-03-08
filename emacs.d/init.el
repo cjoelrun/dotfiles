@@ -277,14 +277,19 @@
 (iswitchb-mode t)            ;use advanced tab switching
 (blink-cursor-mode -1)       ;no cursor blinking
 (tool-bar-mode -1)           ;disable the awful toolbar
-(scroll-bar-mode -1)         ;disable the sroll bar
 (global-visual-line-mode 1)
+
+(when (display-graphic-p)
+  (scroll-bar-mode -1))
 
 ;; System specific settings
 ;; linux
 (when (eq system-type 'gnu/linux)
-  (setq browse-url-generic-program "/usr/bin/conkeror")
-  (turn-on-xclip))
+  (when (display-graphic-p)
+    (setq browse-url-generic-program "/usr/bin/conkeror")
+    (turn-on-xclip)
+    )
+)
 
 ;; under mac, have Command as Meta and keep Option for localized input
 (when (string-match "apple-darwin" system-configuration)
@@ -560,22 +565,6 @@
 
 ;; grizzl
 (setq *grizzl-read-max-results* 30)
-
-;; helm
-;; (require 'helm-config)
-;; (setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
-;; (helm-mode 1)
-;; (helm-gtags-mode 1)
-;; (helm-descbinds-mode)
-;; (setq helm-idle-delay 0.1)
-;; (setq helm-input-idle-delay 0.1)
-;; (setq helm-buffer-max-length 50)
-;; (setq helm-M-x-always-save-history t)
-;; (setq helm-buffer-details-flag nil)
-;; (add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
-;; (add-to-list 'helm-completing-read-handlers-alist '(org-agenda-refile)) ; same goes for org-agenda-refile
-;; (require 'helm-git)
-;; (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 
 ;; save recently opened files
 (setq recentf-save-file (expand-file-name "~/.recentf"))
