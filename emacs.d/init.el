@@ -476,16 +476,6 @@
 ;; kill whitespace
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-;; active Org-babel languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(;; other Babel languages
-   (plantuml . t)))
-
-;; plantuml
-(setq org-plantuml-jar-path
-      (expand-file-name "~/plantuml.jar"))
-
 ;; User path
 (setenv "PATH" (concat (getenv "HOME") "/bin:" (getenv "PATH")))
 (setq exec-path (cons (concat (getenv "HOME") "/bin:") exec-path))
@@ -716,3 +706,13 @@
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+;; active Org-babel languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(;; other Babel languages
+   (plantuml . t)))
+
+;; plantuml
+(setq org-plantuml-jar-path
+      (expand-file-name "~/plantuml.jar"))
