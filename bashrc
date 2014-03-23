@@ -42,7 +42,6 @@ sshn() {
     sshpass -p `knife node show $1 -a password | grep password | awk '{print $2}'` ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet -l root `knife node show $1 -a ipaddress | grep ipaddress| awk '{print $2}'`
 }
 
-export PYTHONPATH=$PYTHONPATH:~/work/jenkins-build/qa/modules/
 export BROWSER=google-chrome
 export EDITOR='emacsclient -nw'
 
@@ -58,3 +57,6 @@ export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 
 export PATH="$PATH:/Applications/Postgres.app/Contents/MacOS/bin"
+
+export CFLAGS=-Qunused-arguments
+export CPPFLAGS=-Qunused-arguments

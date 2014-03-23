@@ -16,15 +16,22 @@ PATH=$PATH:$HOME/bin # Add home bin to PATH
 PATH=$PATH:$HOME/.cabal/bin # Add cabal to PATH
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 PATH=/usr/local/heroku/bin:$PATH # Add heroku to path
+PATH=/usr/local/sbin:$PATH
+PATH=/usr/local/bin:$PATH
+PATH=$PATH:/Applications/Postgres.app/Contents/MacOS/bin
+
 gem --version > /dev/null && PATH=$PATH:`ruby -r rubygems -e "p Gem.path" | sed 's/"]/\/bin/g' | sed 's/\[//' | sed 's/, /\/bin:/g' | sed 's/"//g'`
 
 WORKON_HOME=$HOME/.venvs
-source /usr/bin/virtualenvwrapper.sh
+source `which virtualenvwrapper.sh`
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 EDITOR="emacsclient -nw"
 BROWSER="conkeror"
+CFLAGS=-Qunused-arguments
+CPPFLAGS=-Qunused-arguments
+ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
 
 alias ls='ls -lhG'
 alias watch_razor="watch -n 5 -d 'ssh cameron@razor \"razor active_model | wc -l ; razor active_model ; razor node | wc -l ; razor node\"'"
