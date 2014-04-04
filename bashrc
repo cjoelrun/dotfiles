@@ -46,7 +46,7 @@ export BROWSER=google-chrome
 export EDITOR='emacsclient -nw'
 
 source `which virtualenvwrapper.sh`
-export WORKON_HOME=~/Envs
+WORKON_HOME=$HOME/.venvs
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -60,3 +60,4 @@ export PATH="$PATH:/Applications/Postgres.app/Contents/MacOS/bin"
 
 export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
+export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future

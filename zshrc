@@ -29,9 +29,9 @@ source `which virtualenvwrapper.sh`
 
 EDITOR="emacsclient -nw"
 BROWSER="conkeror"
-CFLAGS=-Qunused-arguments
-CPPFLAGS=-Qunused-arguments
-ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
+export CFLAGS=-Qunused-arguments
+export CPPFLAGS=-Qunused-arguments
+export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
 
 alias ls='ls -lhG'
 alias watch_razor="watch -n 5 -d 'ssh cameron@razor \"razor active_model | wc -l ; razor active_model ; razor node | wc -l ; razor node\"'"
