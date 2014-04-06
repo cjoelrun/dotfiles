@@ -5,7 +5,7 @@
   (require 'bytecomp)
   (let ((dotemacs (expand-file-name "~/.emacs.d/init.el")))
     (if (string= (buffer-file-name) (file-chase-links dotemacs))
-                                        (byte-compile-file dotemacs))))
+        (byte-compile-file dotemacs))))
 (add-hook 'after-save-hook 'autocompile)
 
 ;; ansi-term zsh support
@@ -113,11 +113,11 @@
 (setq el-get-install-skip-emacswiki-recipes t)
 (unless (require 'el-get nil 'noerror)
   (if my-onlinep
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-      (goto-char (point-max))
-      (eval-print-last-sexp))
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+        (goto-char (point-max))
+        (eval-print-last-sexp))
     (error "El-Get is not installed and we are unable to download it without an internet connection: cannot continue")))
 
 ;; package repos
@@ -169,7 +169,6 @@
         elpy
         epc
         epl
-        erc-hl-nicks
         expand-region
         f
         find-file-in-project
@@ -287,9 +286,7 @@
 (when (eq system-type 'gnu/linux)
   (when (display-graphic-p)
     (setq browse-url-generic-program "/usr/bin/conkeror")
-    (turn-on-xclip)
-    )
-)
+    (turn-on-xclip)))
 
 ;; under mac, have Command as Meta and keep Option for localized input
 (when (string-match "apple-darwin" system-configuration)
@@ -325,8 +322,8 @@
    (concat
     "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
     (url-hexify-string (if mark-active
-         (buffer-substring (region-beginning) (region-end))
-       (read-string "Google: "))))))
+                           (buffer-substring (region-beginning) (region-end))
+                         (read-string "Google: "))))))
 (global-set-key (kbd "C-c g") 'google)
 
 ;; ;; ERC
@@ -351,39 +348,8 @@
 (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
                                 "324" "329" "332" "333" "353" "477"))
 (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
-
-;; ------ template for .user.el
-;; (setq erc-prompt-for-nickserv-password nil)
-;; (setq erc-server "hostname"
-;;       erc-port 7000
-;;       erc-nick "user"
-;;       erc-user-full-name "user"
-;;       erc-email-userid "user"
-;;       erc-password "user:pw"
-;;       )
-
-;; (setq erc-autojoin-channels-alist
-;;       '(("freenode.net" "#rcbops" "#pcqa" "#cloudcafe")
-;; (erc :server "irc.freenode.net" :port 6667 :nick "cjoelrun" :password easy-pass)
-;; (erc-tls :server "pretentious.me" :port 6697 :nick "cjoelrun" :password hard-pass)
-;; (erc :server "pretentious.me"
-;;      :port 8888
-;;      :nick "cjoelrun"
-;;      :password (format "cameron:%s" hard-pass))
-;; (and
-;;  (require 'erc-highlight-nicknames)
-;;  (add-to-list 'erc-modules 'highlight-nicknames)
-;;  (erc-update-modules))
-
-(add-hook 'erc-join-hook 'bitlbee-identify)
-(defun bitlbee-identify ()
-  "If we're on the bitlbee server, send the identify command to the
- &bitlbee channel."
-  (when (and (string= "pretentious.me" erc-session-server)
-                  (string= "&bitlbee" (buffer-name)))
-    (erc-message "PRIVMSG" (format "%s identify %s"
-                                      (erc-default-target)
-                                         hard-pass))))
+(require 'erc-terminal-notifier)
+(load "~/.ercpass")
 
 ;; Bottle
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
@@ -403,8 +369,24 @@
  '(browse-url-browser-function (quote browse-url-generic))
  '(indent-tabs-mode nil)
  '(org-agenda-files (quote ("~/Dropbox/Notes/todo.org")))
- '(org-file-apps (quote ((auto-mode . emacs) ("\\.mm\\'" . default) ("\\.x?html?\\'" . default) ("\\.pdf\\'" . emacs))))
+ '(org-file-apps
+   (quote
+    ((auto-mode . emacs)
+     ("\\.mm\\'" . default)
+     ("\\.x?html?\\'" . default)
+     ("\\.pdf\\'" . emacs))))
  '(virtualenv-root "~/.venvs/"))
+
+(defun start-irc ()
+  "Connect to IRC."
+  (interactive)
+  (erc-tls :server irc-host
+           :port 6697
+           :nick irc-nick)
+  (erc-tls :server irc-host
+           :port 6697
+           :nick (format "%s/bitlbee" irc-nick)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -628,8 +610,8 @@
 ;; display the agenda first
 (setq org-agenda-custom-commands
       '(("n" "Agenda and all TODO's"
-        ((alltodo "")
-         (agenda "")))))
+         ((alltodo "")
+          (agenda "")))))
 
 (defun my-initial-buffer-choice ()
   (org-agenda nil "n")
