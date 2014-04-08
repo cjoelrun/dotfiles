@@ -35,22 +35,6 @@
 (menu-bar-mode -1)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(defun copy-from-osx ()
-  (shell-command-to-string "pbpaste"))
-
-(defun paste-to-osx (text &optional push)
-  (let ((process-connection-type nil))
-    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-      (process-send-string proc text)
-      (process-send-eof proc))))
-
-;; choose your own fonts, in a system dependant way
-(if (string-match "apple-darwin" system-configuration)
-    (set-frame-font "-apple-Inconsolata-medium-normal-normal-*-11-*-*-*-m-0-iso10646-1")
-  (setq interprogram-cut-function 'paste-to-osx)
-  (setq interprogram-paste-function 'copy-from-osx)
-  )
-
 (add-to-list 'default-frame-alist
              '(font . "-apple-Inconsolata-medium-normal-normal-*-11-*-*-*-m-0-iso10646-1"))
 
@@ -208,6 +192,7 @@
         nose
         nrepl-eval-sexp-fu
         org
+        pbcopy
         pcache
         pkg-info
         popup
@@ -276,7 +261,6 @@
 (iswitchb-mode t)            ;use advanced tab switching
 (blink-cursor-mode -1)       ;no cursor blinking
 (tool-bar-mode -1)           ;disable the awful toolbar
-(global-visual-line-mode 1)
 
 (when (display-graphic-p)
   (scroll-bar-mode -1))
@@ -293,7 +277,8 @@
   (setq browse-url-generic-program "open")
   (setq mac-allow-anti-aliasing t)
   (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'meta))
+  (setq mac-option-modifier 'meta)
+  (turn-on-pbcopy))
 
 ;; osx path
 (when (memq window-system '(mac ns))
@@ -401,7 +386,6 @@
 (setq deft-extension "org")
 (setq deft-text-mode 'org-mode)
 (setq deft-use-filename-as-title t)
-(add-hook 'deft-mode-hook (lambda  () (setq word-wrap nil)))
 
 ;; w3m
 (when (require 'w3m nil t)
@@ -534,6 +518,7 @@
 (projectile-global-mode)
 ;; (require 'projectile nil t)
 (setq projectile-completion-system 'grizzl)
+(setq speedbar-use-images nil)
 
 ;; grizzl
 (setq *grizzl-read-max-results* 30)
