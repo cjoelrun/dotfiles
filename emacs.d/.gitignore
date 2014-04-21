@@ -4,3 +4,6 @@ var
 eshell
 url
 thumbs
+.hg
+.hgtags
+.elc
