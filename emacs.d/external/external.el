@@ -3,14 +3,18 @@
 (add-to-list 'load-path "~/.emacs.d/external/magit")
 (eval-after-load 'info
   '(progn (info-initialize)
-	  (add-to-list 'Info-directory-list "~/.emacs.d/external/magit")))
+      (add-to-list 'Info-directory-list "~/.emacs.d/external/magit")))
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
-(when (fboundp 'file-notify-add-watch)
-  (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
+;; (when (fboundp 'file-notify-add-watch)
+;;   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
 (setq magit-save-some-buffers nil) ;don't ask to save buffers
 (setq magit-set-upstream-on-push t) ;ask to set upstream
 (setq magit-diff-refine-hunk t) ;show word-based diff for current hunk
+
+;; magit-filenotify
+;; (add-to-list 'load-path "~/.emacs.d/external/magit-filenotify")
+;; (require 'magit-filenotify)
 
 ;; git-gutter+
 (add-to-list 'load-path "~/.emacs.d/external/git-gutter-plus")
