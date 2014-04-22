@@ -4,3 +4,57 @@
 [submodule "emacs.d/external/deft"]
 	path = emacs.d/external/deft
 	url = git://jblevins.org/git/deft.git
+[submodule "emacs.d/external/Highlight-Indentation-for-Emacs"]
+	path = emacs.d/external/Highlight-Indentation-for-Emacs
+	url = https://github.com/antonj/Highlight-Indentation-for-Emacs.git
+[submodule "emacs.d/external/auto-complete"]
+	path = emacs.d/external/auto-complete
+	url = https://github.com/auto-complete/auto-complete.git
+[submodule "emacs.d/external/elpy"]
+	path = emacs.d/external/elpy
+	url = https://github.com/jorgenschaefer/elpy.git
+[submodule "emacs.d/external/emacs-ctable"]
+	path = emacs.d/external/emacs-ctable
+	url = https://github.com/kiwanami/emacs-ctable.git
+[submodule "emacs.d/external/emacs-deferred"]
+	path = emacs.d/external/emacs-deferred
+	url = https://github.com/kiwanami/emacs-deferred.git
+[submodule "emacs.d/external/emacs-epc"]
+	path = emacs.d/external/emacs-epc
+	url = https://github.com/kiwanami/emacs-epc.git
+[submodule "emacs.d/external/emacs-jedi"]
+	path = emacs.d/external/emacs-jedi
+	url = https://github.com/tkf/emacs-jedi.git
+[submodule "emacs.d/external/emacs-python-environment"]
+	path = emacs.d/external/emacs-python-environment
+	url = https://github.com/tkf/emacs-python-environment.git
+[submodule "emacs.d/external/exec-path-from-shell"]
+	path = emacs.d/external/exec-path-from-shell
+	url = https://github.com/purcell/exec-path-from-shell.git
+[submodule "emacs.d/external/find-file-in-project"]
+	path = emacs.d/external/find-file-in-project
+	url = https://github.com/technomancy/find-file-in-project.git
+[submodule "emacs.d/external/git-gutter-plus"]
+	path = emacs.d/external/git-gutter-plus
+	url = https://github.com/nonsequitur/git-gutter-plus.git
+[submodule "emacs.d/external/git-modes"]
+	path = emacs.d/external/git-modes
+	url = https://github.com/magit/git-modes.git
+[submodule "emacs.d/external/iedit"]
+	path = emacs.d/external/iedit
+	url = https://github.com/victorhge/iedit.git
+[submodule "emacs.d/external/magit"]
+	path = emacs.d/external/magit
+	url = git://github.com/magit/magit.git
+[submodule "emacs.d/external/pbcopy"]
+	path = emacs.d/external/pbcopy
+	url = https://github.com/jkp/pbcopy.el.git
+[submodule "emacs.d/external/popup-el"]
+	path = emacs.d/external/popup-el
+	url = https://github.com/auto-complete/popup-el.git
+[submodule "emacs.d/external/pyvenv"]
+	path = emacs.d/external/pyvenv
+	url = https://github.com/jorgenschaefer/pyvenv
+[submodule "emacs.d/external/yasnippet"]
+	path = emacs.d/external/yasnippet
+	url = https://github.com/capitaomorte/yasnippet.git
