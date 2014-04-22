@@ -1,0 +1,6 @@
+[submodule "emacs.d/external/magit-filenotify"]
+	path = emacs.d/external/magit-filenotify
+	url = https://github.com/magit/magit-filenotify.git
+[submodule "emacs.d/external/deft"]
+	path = emacs.d/external/deft
+	url = git://jblevins.org/git/deft.git
