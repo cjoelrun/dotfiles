@@ -62,4 +62,5 @@
 (setq deft-extension "org")
 (setq deft-text-mode 'org-mode)
 (setq deft-use-filename-as-title t)
+(setq deft-auto-save-interval 10.0)
 (require 'deft)
