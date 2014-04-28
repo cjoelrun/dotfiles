@@ -118,11 +118,12 @@
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
 
-(add-to-list 'load-path "~/.emacs.d/external/")
-(load-library "external")
-
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (when (string-match "apple-darwin" system-configuration)
   (load-library "osx"))
+
+(add-to-list 'load-path "~/.emacs.d/external/")
+(load-library "external")
+
 (when (eq system-type 'gnu/linux)
   (load-library "linux"))
