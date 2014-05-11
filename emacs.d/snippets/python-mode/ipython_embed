@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ipython_embed
+# key: ipython
+# binding: direct-keybinding
+# --
+from IPython import embed; embed()

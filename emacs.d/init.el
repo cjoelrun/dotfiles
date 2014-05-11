@@ -73,6 +73,9 @@
 (windmove-default-keybindings 'meta)
 (setq windmove-wrap-around t)
 
+(global-set-key (kbd "s-=") (text-scale-increase 1))
+(global-set-key (kbd "s--") (text-scale-decrease 1))
+
 ;; Delete selection on input
 (delete-selection-mode 1)
 
@@ -99,6 +102,11 @@
                  (interactive)
                  (TeX-command-menu "LaTeX")))
              ))
+
+;; org-mode
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
 
 ;; ido
 (setq ido-enable-flex-matching t

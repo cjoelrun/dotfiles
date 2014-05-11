@@ -10,10 +10,15 @@
 [url "git@github.com:"]
     pushInsteadOf = git://github.com/
     pushInsteadOf = https://github.com/
+[url "git@github.rackspace.com:"]
+    pushInsteadOf = git://github.rackspace.com/
+    pushInsteadOf = https://github.rackspace.com/
 [alias]
-	st = status -sb
-	l = log --all --graph --decorate --oneline --abbrev-commit
+    st = status -sb
+    l = log --all --graph --decorate --oneline --abbrev-commit
 [help]
-	autocorrect = 1
+    autocorrect = 1
 [color]
-	ui = 1
+    ui = 1
+[http]
+    sslVerify = false
