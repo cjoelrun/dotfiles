@@ -53,13 +53,13 @@
 (global-auto-revert-mode 1);auto revert buffers when changed on disk
 (show-paren-mode t)        ;visualize()
 (blink-cursor-mode -1)     ;no cursor blinking
-(tool-bar-mode -1)         ;disable the awful toolbar
 (column-number-mode 1)     ; column numbers in the mode line
 (menu-bar-mode -1)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (when (display-graphic-p)
+  (tool-bar-mode -1)                    ;disable the awful toolbar
   (scroll-bar-mode -1))
-(global-hl-line-mode)      ; highlight current line
+(global-hl-line-mode)                   ; highlight current line
 
 ;; avoid compiz manager rendering bugs
 (add-to-list 'default-frame-alist '(alpha . 100))
