@@ -64,3 +64,7 @@
 (setq deft-use-filename-as-title t)
 (setq deft-auto-save-interval 10.0)
 (require 'deft)
+
+;; deft
+(add-to-list 'load-path "~/.emacs.d/external/xclip")
+(require 'xclip)
