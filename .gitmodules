@@ -42,7 +42,7 @@
     url = https://github.com/victorhge/iedit.git
 [submodule "emacs.d/external/magit"]
     path = emacs.d/external/magit
-    url = git://github.com/magit/magit.git
+    url = https://github.com/magit/magit.git
 [submodule "emacs.d/external/pbcopy"]
     path = emacs.d/external/pbcopy
     url = https://github.com/jkp/pbcopy.el.git
