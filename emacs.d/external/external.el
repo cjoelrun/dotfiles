@@ -5,6 +5,7 @@
   '(progn (info-initialize)
       (add-to-list 'Info-directory-list "~/.emacs.d/external/magit")))
 (require 'magit)
+(require 'magit-blame)
 (global-set-key (kbd "C-x g") 'magit-status)
 ;; (when (fboundp 'file-notify-add-watch)
 ;;   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
