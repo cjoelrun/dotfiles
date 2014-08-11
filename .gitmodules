@@ -55,3 +55,6 @@
 [submodule "emacs.d/external/yasnippet"]
     path = emacs.d/external/yasnippet
     url = https://github.com/capitaomorte/yasnippet.git
+[submodule "emacs.d/external/company-mode"]
+	path = emacs.d/external/company-mode
+	url = https://github.com/company-mode/company-mode
