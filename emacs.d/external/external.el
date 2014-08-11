@@ -38,25 +38,44 @@
 (add-to-list 'load-path "~/.emacs.d/external/popup-el")
 (add-to-list 'load-path "~/.emacs.d/external/emacs-python-environment")
 (add-to-list 'load-path "~/.emacs.d/external/company-mode")
-(add-hook 'after-init-hook 'global-company-mode)
+
+(require 'company)
+(setq company-idle-delay 0.3)
+(setq company-tooltip-limit 20)
+(setq company-minimum-prefix-length 2)
+(setq company-echo-delay 0)
+(setq company-auto-complete nil)
+(global-company-mode 1)
+(add-to-list 'company-backends 'company-dabbrev t)
+(add-to-list 'company-backends 'company-ispell t)
+(add-to-list 'company-backends 'company-files t)
+(setq company-backends (remove 'company-ropemacs company-backends))
+;; This enables company completion for org-mode built-in commands and tags.
+(defun my-pcomplete-capf ()
+  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+(add-hook 'org-mode-hook #'my-pcomplete-capf)
+
 (add-to-list 'load-path "~/.emacs.d/external/emacs-jedi")
 (add-to-list 'load-path "~/.emacs.d/external/yasnippet")
 (add-to-list 'load-path "~/.emacs.d/external/Highlight-Indentation-for-Emacs")
 (add-to-list 'load-path "~/.emacs.d/external/find-file-in-project")
+
 (require 'find-file-in-project)
 (global-set-key (kbd "C-x f") 'find-file-in-project)
+
 (add-to-list 'load-path "~/.emacs.d/external/idomenu")
 (autoload 'idomenu "idomenu" nil t)
+
 (add-to-list 'load-path "~/.emacs.d/external/iedit")
 (require 'iedit)
 (add-to-list 'load-path "~/.emacs.d/external/nosemacs")
 (add-to-list 'load-path "~/.emacs.d/external/pyvenv")
+
 ;; elpy
 (add-to-list 'load-path "~/.emacs.d/external/elpy")
 (require 'elpy)
 (elpy-enable)
 (elpy-use-ipython)
-(elpy-clean-modeline)
 (setq elpy-rpc-python-command "python2.7")
 
 ;; deft
