@@ -6,8 +6,6 @@ setopt autocd extendedglob
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/cameron/.zshrc'
-
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
@@ -18,8 +16,6 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 PATH=/usr/local/heroku/bin:$PATH # Add heroku to path
 PATH=/usr/local/sbin:$PATH
 PATH=/usr/local/bin:$PATH
-PATH=$PATH:/Applications/Postgres.app/Contents/MacOS/bin
-
 gem --version > /dev/null && PATH=$PATH:`ruby -r rubygems -e "p Gem.path" | sed 's/"]/\/bin/g' | sed 's/\[//' | sed 's/, /\/bin:/g' | sed 's/"//g'`
 
 WORKON_HOME=$HOME/.venvs
@@ -29,9 +25,16 @@ source `which virtualenvwrapper.sh`
 
 EDITOR="emacsclient -nw"
 BROWSER="conkeror"
-export CFLAGS=-Qunused-arguments
-export CPPFLAGS=-Qunused-arguments
-export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  zstyle :compinstall filename '/home/cameron/.zshrc'
+  eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  C_INCLUDE_PATH=/usr/local/Cellar/libxml2/2.9.1/include/libxml2:$C_INCLUDE_PATH
+  CFLAGS=-Qunused-arguments
+  CPPFLAGS=-Qunused-arguments
+  ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
+  PATH=$PATH:/Applications/Postgres.app/Contents/MacOS/bin
+fi
 
 alias ls='ls -lhG'
 alias watch_razor="watch -n 5 -d 'ssh cameron@razor \"razor active_model | wc -l ; razor active_model ; razor node | wc -l ; razor node\"'"
