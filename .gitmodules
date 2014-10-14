@@ -58,3 +58,6 @@
 [submodule "emacs.d/external/company-mode"]
 	path = emacs.d/external/company-mode
 	url = https://github.com/company-mode/company-mode
+[submodule "emacs.d/external/mu4e-multi"]
+	path = emacs.d/external/mu4e-multi
+	url = https://github.com/fgallina/mu4e-multi.git
