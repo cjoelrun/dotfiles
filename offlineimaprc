@@ -1,0 +1,39 @@
+[general]
+accounts = Gmail,Work
+maxsyncaccounts = 3
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = ~/Maildir/gmail
+
+[Repository Gmail-Remote]
+type = IMAP
+remotehost = imap.gmail.com
+remoteuser = cameronjlopez@gmail.com
+# pass in .netrc
+ssl = yes
+maxconnections = 1
+realdelete = no
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Account Work]
+localrepository = Work-Local
+remoterepository = Work-Remote
+
+[Repository Work-Local]
+type = Maildir
+localfolders = ~/Maildir/work
+
+[Repository Work-Remote]
+type = IMAP
+remotehost = rackermail.rackspace.com
+remoteuser = came5758
+# pass in .netrc
+ssl = yes
+maxconnections = 1
+realdelete = no
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
