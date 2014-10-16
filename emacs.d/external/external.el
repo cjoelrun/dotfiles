@@ -89,3 +89,7 @@
 ;; deft
 (add-to-list 'load-path "~/.emacs.d/external/xclip")
 (require 'xclip)
+
+;; mail
+(when (eq system-type 'gnu/linux)
+  (load-library "mail"))
