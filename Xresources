@@ -17,3 +17,6 @@ URxvt*urlLauncher: conkeror
 URxvt*matcher.button: 1
 URxvt*inheritPixmap: false
 URxvt*xftAntialias: true
+URxvt.keysym.Mod4-v: perl:clipboard:paste
+URxvt.iso14755: False
+URxvt.perl-ext-common: default,clipboard

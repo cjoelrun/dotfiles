@@ -61,3 +61,9 @@
 [submodule "emacs.d/external/mu4e-multi"]
 	path = emacs.d/external/mu4e-multi
 	url = https://github.com/fgallina/mu4e-multi.git
+[submodule "tmux/plugins/tpm"]
+	path = tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
+[submodule "tmux/plugins/tmux-yank"]
+	path = tmux/plugins/tmux-yank
+	url = https://github.com/tmux-plugins/tmux-yank
