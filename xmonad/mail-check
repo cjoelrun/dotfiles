@@ -1,0 +1,6 @@
+#! /bin/bash
+# I ould also have used `ls -1 | wc -l` - faster, but also includes directories
+GMAIL=`ls -l ~/Maildir/gmail/INBOX/new/ | grep ^- | wc -l`
+WORK=`ls -l ~/Maildir/work/INBOX/new/ | grep ^- | wc -l`
+DVC=`ls -l ~/Maildir/work/INBOX.DvCD/new/ | grep ^- | wc -l`
+echo gmail $GMAIL work $WORK dvc $DVC
