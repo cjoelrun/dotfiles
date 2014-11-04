@@ -24,6 +24,8 @@ main = do
       , focusedBorderColor = myFocusedBorderColor
       } `additionalKeys`
       [ ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
+        -- Screenshot
+      , ((mod4Mask .|. shiftMask, xK_s), spawn "maim -s -c 1,0,0,0.6")
         -- Volume Down
       , ((noModMask, xF86XK_AudioLowerVolume), spawn "amixer -c 0 set Master 2dB-")
         -- Volume Up

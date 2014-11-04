@@ -6,7 +6,7 @@ xset fp rehash
 xsetroot -cursor_name left_ptr
 setxkbmap -option ctrl:nocaps
 /usr/lib/systemd/systemd --user &
-exec xscreensaver -no-splash &
+# exec xscreensaver -no-splash &
 xrandr --output HDMI3 --primary
 xrandr --output HDMI1 --right-of HDMI3
 autocutsel -fork &

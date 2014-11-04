@@ -12,9 +12,9 @@ Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
                     , Run Com "/home/cameron/bin/volume.sh" [] "vol" 10
                     , Run StdinReader
                     , Run BatteryP ["BAT0"] ["-t", "<acstatus>" , "-L", "10", "-H", "80" , "-l", "red", "-h", "green" , "--", "-O", "Charging", "-o", "B:<left>%"] 10
-                    , Run Com "mail-check" [] "mail" 50
+                    , Run Com "/home/cameron/.xmonad/mail-check" [] "mail-check" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %mail% | %cpu% | %memory% * %swap% | %eth0% | <fc=darkcyan>%date%</fc> | %KSAT% | %battery%"
+       , template = "%StdinReader% }{ %mail-check% | %cpu% | %memory% * %swap% | %eth0% | <fc=darkcyan>%date%</fc> | %KSAT% | %battery%"
        }
