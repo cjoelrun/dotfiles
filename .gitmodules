@@ -70,3 +70,12 @@
 [submodule "emacs.d/external/yaml-mode"]
 	path = emacs.d/external/yaml-mode
 	url = https://github.com/yoshiki/yaml-mode
+[submodule "emacs.d/external/eww-lnum"]
+	path = emacs.d/external/eww-lnum
+	url = https://github.com/m00natic/eww-lnum.git
+[submodule "emacs.d/external/restclient"]
+	path = emacs.d/external/restclient
+	url = https://github.com/pashky/restclient.el.git
+[submodule "emacs.d/external/json-reformat"]
+	path = emacs.d/external/json-reformat
+	url = https://github.com/gongo/json-reformat.git

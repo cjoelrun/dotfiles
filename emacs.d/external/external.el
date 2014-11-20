@@ -93,3 +93,20 @@
 ;; mail
 (when (eq system-type 'gnu/linux)
   (load-library "mail"))
+
+;; yaml
+(add-to-list 'load-path "~/.emacs.d/external/yaml-mode")
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
+
+;; eww lnum
+(add-to-list 'load-path "~/.emacs.d/external/eww-lnum")
+(eval-after-load "eww"
+  '(progn (define-key eww-mode-map "f" 'eww-lnum-follow)
+          (define-key eww-mode-map "F" 'eww-lnum-universal)))
+
+;; restclient
+(add-to-list 'load-path "~/.emacs.d/external/json-reformat")
+(add-to-list 'load-path "~/.emacs.d/external/restclient")
+(require 'restclient)
