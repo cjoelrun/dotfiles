@@ -27,7 +27,7 @@ EDITOR="emacsclient -nw"
 BROWSER="conkeror"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   zstyle :compinstall filename '/home/cameron/.zshrc'
-  eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
+  eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   C_INCLUDE_PATH=/usr/local/Cellar/libxml2/2.9.1/include/libxml2:$C_INCLUDE_PATH
   CFLAGS=-Qunused-arguments
