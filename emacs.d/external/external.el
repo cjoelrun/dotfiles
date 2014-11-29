@@ -102,6 +102,7 @@
 
 ;; eww lnum
 (add-to-list 'load-path "~/.emacs.d/external/eww-lnum")
+(require 'eww-lnum)
 (eval-after-load "eww"
   '(progn (define-key eww-mode-map "f" 'eww-lnum-follow)
           (define-key eww-mode-map "F" 'eww-lnum-universal)))
