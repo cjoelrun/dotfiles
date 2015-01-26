@@ -79,3 +79,6 @@
 [submodule "emacs.d/external/json-reformat"]
 	path = emacs.d/external/json-reformat
 	url = https://github.com/gongo/json-reformat.git
+[submodule "emacs.d/external/plantuml-mode"]
+	path = emacs.d/external/plantuml-mode
+	url = https://github.com/zwz/plantuml-mode.git

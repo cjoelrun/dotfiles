@@ -106,7 +106,9 @@
 ;; org-mode
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)))
+ '((python . t)
+   (plantuml . t)))
+(setq org-plantuml-jar-path (expand-file-name "~/Dropbox/bin/plantuml.jar"))
 
 ;; ido
 (setq ido-enable-flex-matching t
