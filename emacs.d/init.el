@@ -110,6 +110,8 @@
    (plantuml . t)))
 (setq org-plantuml-jar-path (expand-file-name "~/Dropbox/bin/plantuml.jar"))
 
+(add-to-list 'org-export-backends 'md)
+
 ;; ido
 (setq ido-enable-flex-matching t
       ido-auto-merge-work-directories-length -1
