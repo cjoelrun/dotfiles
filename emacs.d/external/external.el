@@ -86,7 +86,6 @@
 (setq deft-auto-save-interval 10.0)
 (require 'deft)
 
-<<<<<<< HEAD
 ;; deft
 (add-to-list 'load-path "~/.emacs.d/external/xclip")
 (require 'xclip)
@@ -96,14 +95,10 @@
   (load-library "mail"))
 
 ;; yaml
-=======
-;; yaml-mode
->>>>>>> yaml
 (add-to-list 'load-path "~/.emacs.d/external/yaml-mode")
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
-<<<<<<< HEAD
 
 ;; eww lnum
 (add-to-list 'load-path "~/.emacs.d/external/eww-lnum")
@@ -116,5 +111,3 @@
 (add-to-list 'load-path "~/.emacs.d/external/json-reformat")
 (add-to-list 'load-path "~/.emacs.d/external/restclient")
 (require 'restclient)
-=======
->>>>>>> yaml
