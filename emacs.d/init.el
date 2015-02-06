@@ -111,6 +111,7 @@
 (setq org-plantuml-jar-path (expand-file-name "~/Dropbox/bin/plantuml.jar"))
 
 (add-to-list 'org-export-backends 'md)
+(setq org-export-with-sub-superscripts nil)
 
 ;; ido
 (setq ido-enable-flex-matching t

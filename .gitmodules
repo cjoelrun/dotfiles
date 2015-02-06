@@ -56,29 +56,29 @@
     path = emacs.d/external/yasnippet
     url = https://github.com/capitaomorte/yasnippet.git
 [submodule "emacs.d/external/company-mode"]
-	path = emacs.d/external/company-mode
-	url = https://github.com/company-mode/company-mode
+    path = emacs.d/external/company-mode
+    url = https://github.com/company-mode/company-mode
 [submodule "emacs.d/external/mu4e-multi"]
-	path = emacs.d/external/mu4e-multi
-	url = https://github.com/fgallina/mu4e-multi.git
+    path = emacs.d/external/mu4e-multi
+    url = https://github.com/fgallina/mu4e-multi.git
 [submodule "tmux/plugins/tpm"]
-	path = tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
+    path = tmux/plugins/tpm
+    url = https://github.com/tmux-plugins/tpm
 [submodule "tmux/plugins/tmux-yank"]
-	path = tmux/plugins/tmux-yank
-	url = https://github.com/tmux-plugins/tmux-yank
+    path = tmux/plugins/tmux-yank
+    url = https://github.com/tmux-plugins/tmux-yank
 [submodule "emacs.d/external/yaml-mode"]
-	path = emacs.d/external/yaml-mode
-	url = https://github.com/yoshiki/yaml-mode
+    path = emacs.d/external/yaml-mode
+    url = https://github.com/yoshiki/yaml-mode
 [submodule "emacs.d/external/eww-lnum"]
-	path = emacs.d/external/eww-lnum
-	url = https://github.com/m00natic/eww-lnum.git
+    path = emacs.d/external/eww-lnum
+    url = https://github.com/m00natic/eww-lnum.git
 [submodule "emacs.d/external/restclient"]
-	path = emacs.d/external/restclient
-	url = https://github.com/pashky/restclient.el.git
+    path = emacs.d/external/restclient
+    url = https://github.com/pashky/restclient.el.git
 [submodule "emacs.d/external/json-reformat"]
-	path = emacs.d/external/json-reformat
-	url = https://github.com/gongo/json-reformat.git
+    path = emacs.d/external/json-reformat
+    url = https://github.com/gongo/json-reformat.git
 [submodule "emacs.d/external/plantuml-mode"]
-	path = emacs.d/external/plantuml-mode
-	url = https://github.com/zwz/plantuml-mode.git
+    path = emacs.d/external/plantuml-mode
+    url = https://github.com/zwz/plantuml-mode.git

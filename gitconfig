@@ -11,8 +11,8 @@
     pushInsteadOf = git://github.com/
     pushInsteadOf = https://github.com/
 [url "git@github.rackspace.com:"]
-    pushInsteadOf = git://github.rackspace.com/
     pushInsteadOf = https://github.rackspace.com/
+    pullInsteadOf = https://github.rackspace.com/
 [alias]
     st = status -sb
     l = log --all --graph --decorate --oneline --abbrev-commit
