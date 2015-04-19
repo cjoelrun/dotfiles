@@ -140,3 +140,4 @@
 
 (when (eq system-type 'gnu/linux)
   (load-library "linux"))
+(put 'upcase-region 'disabled nil)
