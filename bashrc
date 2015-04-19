@@ -61,3 +61,6 @@ export PATH="$PATH:/Applications/Postgres.app/Contents/MacOS/bin"
 export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
 export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
+
+#THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
+[[ -s "/Users/cameron/.gvm/bin/gvm-init.sh" ]] && source "/Users/cameron/.gvm/bin/gvm-init.sh"

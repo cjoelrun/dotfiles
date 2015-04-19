@@ -111,3 +111,15 @@
 (add-to-list 'load-path "~/.emacs.d/external/json-reformat")
 (add-to-list 'load-path "~/.emacs.d/external/restclient")
 (require 'restclient)
+
+;; plantuml
+(add-to-list 'load-path "~/.emacs.d/external/plantuml-mode")
+(require 'plantuml-mode)
+
+;; jvm
+(load-file "~/projects/cedet/cedet-devel-load.el")
+(add-hook 'after-init-hook (lambda ()
+                             (message "activate-malabar-mode")
+                             (activate-malabar-mode)))
+(add-hook 'malabar-java-mode-hook 'flycheck-mode)
+(add-hook 'malabar-groovy-mode-hook 'flycheck-mode)

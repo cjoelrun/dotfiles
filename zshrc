@@ -71,3 +71,6 @@ sshn() {
 novar() {
         export OLD_REGION=$OS_REGION_NAME; for i in ORD DFW IAD HKG SYD; do export OS_REGION_NAME=$i; echo $OS_REGION_NAME; nova list; done; export OS_REGION_NAME=$OLD_REGION
 }
+
+#THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
+[[ -s "/Users/cameron/.gvm/bin/gvm-init.sh" ]] && source "/Users/cameron/.gvm/bin/gvm-init.sh"
