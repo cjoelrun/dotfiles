@@ -82,3 +82,30 @@
 [submodule "emacs.d/external/plantuml-mode"]
     path = emacs.d/external/plantuml-mode
     url = https://github.com/zwz/plantuml-mode.git
+[submodule "emacs.d/clojure-mode"]
+	path = emacs.d/clojure-mode
+	url = git@github.com:clojure-emacs/clojure-mode.git
+[submodule "emacs.d/cider"]
+	path = emacs.d/cider
+	url = git@github.com:clojure-emacs/cider.git
+[submodule "emacs.d/external/cider"]
+	path = emacs.d/external/cider
+	url = git@github.com:clojure-emacs/cider.git
+[submodule "emacs.d/emacs.d/external/dash"]
+	path = emacs.d/emacs.d/external/dash
+	url = git@github.com:magnars/dash.el.git
+[submodule "emacs.d/external/dash"]
+	path = emacs.d/external/dash
+	url = git@github.com:magnars/dash.el.git
+[submodule "emacs.d/external/clojure-mode"]
+	path = emacs.d/external/clojure-mode
+	url = git@github.com:clojure-emacs/clojure-mode.git
+[submodule "emacs.d/external/pkg-info"]
+	path = emacs.d/external/pkg-info
+	url = git@github.com:lunaryorn/pkg-info.el.git
+[submodule "emacs.d/external/epl"]
+	path = emacs.d/external/epl
+	url = git@github.com:cask/epl.git
+[submodule "emacs.d/external/haskell-mode"]
+	path = emacs.d/external/haskell-mode
+	url = git@github.com:haskell/haskell-mode.git
