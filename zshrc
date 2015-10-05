@@ -34,6 +34,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
   CPPFLAGS=-Qunused-arguments
   ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
   PATH=$PATH:/Applications/Postgres.app/Contents/MacOS/bin
+  alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 fi
 
 alias ls='ls -lhG'

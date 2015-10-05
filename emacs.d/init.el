@@ -9,9 +9,9 @@
 (add-hook 'after-save-hook 'autocompile)
 
 ;; start emacs server
-(require 'server)
-(unless (server-running-p)
-  (server-start))
+(if (and (fboundp 'server-running-p)
+         (not (server-running-p)))
+    (server-start))
 
 ;; general settings
 (setq
@@ -58,7 +58,10 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (when (display-graphic-p)
   (tool-bar-mode -1)                    ;disable the awful toolbar
-  (scroll-bar-mode -1))
+  (scroll-bar-mode -1)
+  (global-set-key (kbd "s-=") (text-scale-increase 1))
+  (global-set-key (kbd "s--") (text-scale-decrease 1))
+  )
 (global-hl-line-mode)                   ; highlight current line
 
 ;; avoid compiz manager rendering bugs
@@ -72,9 +75,6 @@
 ;; Navigate windows with M-<arrows>
 (windmove-default-keybindings 'meta)
 (setq windmove-wrap-around t)
-
-(global-set-key (kbd "s-=") (text-scale-increase 1))
-(global-set-key (kbd "s--") (text-scale-decrease 1))
 
 ;; Delete selection on input
 (delete-selection-mode 1)
@@ -136,7 +136,8 @@
   (load-library "osx"))
 
 (add-to-list 'load-path "~/.emacs.d/external/")
-(load-library "external")
+;; (load-library "external")
+(load-library "external-el-get")
 
 (when (eq system-type 'gnu/linux)
   (load-library "linux"))

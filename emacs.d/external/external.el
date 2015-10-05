@@ -1,3 +1,5 @@
+(add-to-list 'load-path "~/.emacs.d/external")
+
 ;; magit
 (add-to-list 'load-path "~/.emacs.d/external/git-modes")
 (add-to-list 'load-path "~/.emacs.d/external/magit")
@@ -116,10 +118,22 @@
 (add-to-list 'load-path "~/.emacs.d/external/plantuml-mode")
 (require 'plantuml-mode)
 
-;; jvm
-(load-file "~/projects/cedet/cedet-devel-load.el")
-(add-hook 'after-init-hook (lambda ()
-                             (message "activate-malabar-mode")
-                             (activate-malabar-mode)))
-(add-hook 'malabar-java-mode-hook 'flycheck-mode)
-(add-hook 'malabar-groovy-mode-hook 'flycheck-mode)
+;; clojure
+(require 'queue)
+(add-to-list 'load-path "~/.emacs.d/external/epl")
+(require 'epl)
+(add-to-list 'load-path "~/.emacs.d/external/pkg-info")
+(require 'pkg-info)
+(add-to-list 'load-path "~/.emacs.d/external/dash")
+(require 'dash)
+(add-to-list 'load-path "~/.emacs.d/external/clojure-mode")
+(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+(add-to-list 'load-path "~/.emacs.d/external/cider")
+(require 'cider)
+
+;; haskell
+(add-to-list 'load-path "~/.emacs.d/external/haskell-mode")
+(require 'haskell-mode)
+(require 'haskell-font-lock)
+(require 'haskell-indentation)
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
