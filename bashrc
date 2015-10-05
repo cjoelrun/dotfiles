@@ -66,3 +66,7 @@ export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
 [[ -s "/Users/cameron/.gvm/bin/gvm-init.sh" ]] && source "/Users/cameron/.gvm/bin/gvm-init.sh"
 
 alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/cameron/.sdkman"
+[[ -s "/home/cameron/.sdkman/bin/sdkman-init.sh" ]] && source "/home/cameron/.sdkman/bin/sdkman-init.sh"
