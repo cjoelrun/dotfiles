@@ -40,6 +40,8 @@
 (el-get-bundle elpy)
 (el-get-bundle plantuml-mode)
 (el-get-bundle cider)
+(el-get-bundle tss)
+(el-get-bundle json-mode)
 
 (el-get 'sync)
 
