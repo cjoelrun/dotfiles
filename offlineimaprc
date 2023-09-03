@@ -18,22 +18,4 @@ remoteuser = cameronjlopez@gmail.com
 ssl = yes
 maxconnections = 1
 realdelete = no
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-
-[Account Work]
-localrepository = Work-Local
-remoterepository = Work-Remote
-
-[Repository Work-Local]
-type = Maildir
-localfolders = ~/Maildir/work
-
-[Repository Work-Remote]
-type = IMAP
-remotehost = rackermail.rackspace.com
-remoteuser = came5758
-# pass in .netrc
-ssl = yes
-maxconnections = 1
-realdelete = no
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile = /usr/local/etc/openssl/cert.pem

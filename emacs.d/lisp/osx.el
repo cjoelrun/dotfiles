@@ -5,11 +5,14 @@
 (setq mac-option-modifier 'meta)
 
 ;; pbcopy - copy to clipboard
-(add-to-list 'load-path "~/.emacs.d/external/pbcopy")
-(require 'pbcopy)
-(turn-on-pbcopy)
+(use-package pbcopy
+  :ensure t
+  :config
+  (turn-on-pbcopy))
 
-;; exec-path-from-shell)
-(add-to-list 'load-path "~/.emacs.d/external/exec-path-from-shell")
-(require 'exec-path-from-shell)
-(exec-path-from-shell-initialize)
+;; ;; exec-path-from-shell)
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "JAVA_HOME"))

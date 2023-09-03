@@ -13,6 +13,10 @@
          (not (server-running-p)))
     (server-start))
 
+(defun save-all ()
+    (interactive)
+    (save-some-buffers t))
+
 ;; general settings
 (setq
  inhibit-splash-screen t                     ; no splash screen
@@ -70,6 +74,9 @@
 ;; kill whitespace
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
+;; autosave
+(add-hook 'focus-out-hook 'save-all)
+
 ;; (display-battery-mode 1)
 
 ;; Navigate windows with M-<arrows>
@@ -102,28 +109,27 @@
                  (interactive)
                  (TeX-command-menu "LaTeX")))
              ))
-
-;; org-mode
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (plantuml . t)))
-(setq org-plantuml-jar-path (expand-file-name "~/Dropbox/bin/plantuml.jar"))
-
-(add-to-list 'org-export-backends 'md)
-(setq org-export-with-sub-superscripts nil)
+(setq org-latex-pdf-process
+      '("pdflatex -interaction nonstopmode -output-directory %o %f"
+    "bibtex %b"
+    "pdflatex -interaction nonstopmode -output-directory %o %f"
+    "pdflatex -interaction nonstopmode -output-directory %o %f"))
 
 ;; ido
+;; (setq ido-enable-flex-matching t
+;;       ido-auto-merge-work-directories-length -1
+;;       ido-create-new-buffer 'always
+;;       ido-everywhere t
+;;       ido-default-buffer-method 'selected-window
+;;       ido-max-prospects 32
+;;       ido-use-filename-at-point 'guess
+;;       )
+;; (ido-mode 1)
+;; (setq ido-use-faces nil)
+(ido-mode)
 (setq ido-enable-flex-matching t
-      ido-auto-merge-work-directories-length -1
-      ido-create-new-buffer 'always
-      ido-everywhere t
-      ido-default-buffer-method 'selected-window
-      ido-max-prospects 32
-      ido-use-filename-at-point 'guess
-      )
-(ido-mode 1)
-(setq ido-use-faces nil)
+      ido-use-virtual-buffers t)
+
 
 ;; encoding
 (set-terminal-coding-system 'utf-8)
@@ -132,12 +138,11 @@
 (prefer-coding-system 'utf-8)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path "~/.emacs.d/external/")
+(load-library "external")
 (when (string-match "apple-darwin" system-configuration)
   (load-library "osx"))
 
-(add-to-list 'load-path "~/.emacs.d/external/")
-;; (load-library "external")
-(load-library "external-el-get")
 
 (when (eq system-type 'gnu/linux)
   (load-library "linux"))

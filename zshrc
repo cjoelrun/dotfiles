@@ -1,81 +1,54 @@
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=100000
-setopt autocd extendedglob
-bindkey -e
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
+export PROJECT_HOME=$HOME/work
+export JSON_DICTIONARY_REPO=$HOME/.configstore
 
-PATH=$PATH:$HOME/bin # Add home bin to PATH
-PATH=$PATH:$HOME/.cabal/bin # Add cabal to PATH
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-PATH=/usr/local/heroku/bin:$PATH # Add heroku to path
-PATH=/usr/local/sbin:$PATH
-PATH=/usr/local/bin:$PATH
-gem --version > /dev/null && PATH=$PATH:`ruby -r rubygems -e "p Gem.path" | sed 's/"]/\/bin/g' | sed 's/\[//' | sed 's/, /\/bin:/g' | sed 's/"//g'`
+export EDITOR="code -w"
+export REACT_EDITOR='/usr/local/bin/code'
 
-WORKON_HOME=$HOME/.venvs
-source `which virtualenvwrapper.sh`
+export ANDROID_HOME=${HOME}/Library/Android/sdk
+export PATH=${PATH}:${ANDROID_HOME}/tools
+export PATH=${PATH}:${ANDROID_HOME}/platform-tools
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+export SDKMAN_DIR="~/.sdkman"
+[[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
 
-EDITOR="emacsclient -nw"
-BROWSER="conkeror"
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-  zstyle :compinstall filename '/home/cameron/.zshrc'
-  eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  C_INCLUDE_PATH=/usr/local/Cellar/libxml2/2.9.1/include/libxml2:$C_INCLUDE_PATH
-  CFLAGS=-Qunused-arguments
-  CPPFLAGS=-Qunused-arguments
-  ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
-  PATH=$PATH:/Applications/Postgres.app/Contents/MacOS/bin
-  alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+
+export PATH="/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.1.0/bin/:$PATH"
+export PATH="$HOME/.yarn/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
+
+NPM_TOKEN_LINE=$(grep -E '^//registry.npmjs.org/:_authToken=' $HOME/.npmrc)
+
+if [ -n "$NPM_TOKEN_LINE" ]; then
+    # Extract the token from the line
+    NPM_TOKEN=$(echo $NPM_TOKEN_LINE | sed 's|^//registry.npmjs.org/:_authToken=||')
+
+    # Export the token as an environment variable
+    export NPM_TOKEN
+else
+    echo "No npm token found in .npmrc file."
 fi
 
-alias ls='ls -lhG'
-alias watch_razor="watch -n 5 -d 'ssh cameron@razor \"razor active_model | wc -l ; razor active_model ; razor node | wc -l ; razor node\"'"
-alias watch_chef="watch -n 5 -d 'ssh cameron@razor \"knife node list | wc -l ; knife node list\"'"
-alias knife-personal='rm -rf .chef; ln -s ~/.chefs/personal ~/.chef'
-alias knife-qa='rm -rf .chef; ln -s ~/.chefs/qa ~/.chef'
-alias nodes='knife node list'
-alias envs='knife environment list'
-alias clients='knife client list'
-alias upgrade_opencafe='for i in "opencafe" "cloudcafe" "cloudroast"; do echo "cd ~/work/cloudcafe/${i}; git fetch --all; sudo pip install -r pip-requires; sudo pip install . --upgrade; cd -" | bash -x; done'
-alias "knifels"='ls ~/.chefs'
-rknife() {
-    knife search node "role:*$1*"
-}
-nknife() {
-    knife search node "name:*$1*"
-}
-eknife() {
-    knife search node "chef_environment:*$1*"
-}
-uknife() {
-    knife search node "in_use:*$1*"
-}
-knifeset() {
-    rm -f ~/.chef
-    ln -s ~/.chefs/$1 ~/.chef
-}
-dracip() {
-    knife node show $1 -a network_interfaces.drac | awk '{if ($2) print $2;}'
-}
-sshn() {
-    sshpass -p `knife node show $1 -a password | grep password | awk '{print $2}'` ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=quiet -l root `knife node show $1 -a ipaddress | grep ipaddress| awk '{print $2}'`
-}
-novar() {
-        export OLD_REGION=$OS_REGION_NAME; for i in ORD DFW IAD HKG SYD; do export OS_REGION_NAME=$i; echo $OS_REGION_NAME; nova list; done; export OS_REGION_NAME=$OLD_REGION
-}
+if [[ -f $TMPDIR/ginger-cli.sh ]]; then
+    source $TMPDIR/ginger-cli.sh
+fi
 
-#THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
-[[ -s "/Users/cameron/.gvm/bin/gvm-init.sh" ]] && source "/Users/cameron/.gvm/bin/gvm-init.sh"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/cameron/.sdkman"
-[[ -s "/home/cameron/.sdkman/bin/sdkman-init.sh" ]] && source "/home/cameron/.sdkman/bin/sdkman-init.sh"
+# This is an example, fill in your own Role here
+export TERRAFORM_EXEC_ROLE=TerraformState
+export TF_VAR_terraform_exec_role=${TERRAFORM_EXEC_ROLE}
+export PATH="$(go env GOPATH)/bin:$PATH"
+
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"

@@ -1,139 +1,78 @@
-(add-to-list 'load-path "~/.emacs.d/external")
+(require 'package)
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-;; magit
-(add-to-list 'load-path "~/.emacs.d/external/git-modes")
-(add-to-list 'load-path "~/.emacs.d/external/magit")
-(eval-after-load 'info
-  '(progn (info-initialize)
-      (add-to-list 'Info-directory-list "~/.emacs.d/external/magit")))
-(require 'magit)
-(require 'magit-blame)
-(global-set-key (kbd "C-x g") 'magit-status)
-;; (when (fboundp 'file-notify-add-watch)
-;;   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
-(setq magit-save-some-buffers nil) ;don't ask to save buffers
-(setq magit-set-upstream-on-push t) ;ask to set upstream
-(setq magit-diff-refine-hunk t) ;show word-based diff for current hunk
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
 
-;; magit-filenotify
-;; (add-to-list 'load-path "~/.emacs.d/external/magit-filenotify")
-;; (require 'magit-filenotify)
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
-;; git-gutter+
-(add-to-list 'load-path "~/.emacs.d/external/git-gutter-plus")
-(require 'git-gutter+)
-(global-git-gutter+-mode t)
-(eval-after-load 'git-gutter+
-  '(progn
-     (define-key git-gutter+-mode-map (kbd "C-x n") 'git-gutter+-next-hunk)
-     (define-key git-gutter+-mode-map (kbd "C-x p") 'git-gutter+-previous-hunk)
-     (define-key git-gutter+-mode-map (kbd "C-x v =") 'git-gutter+-show-hunk)
-     (define-key git-gutter+-mode-map (kbd "C-x v r") 'git-gutter+-revert-hunks)
-     (define-key git-gutter+-mode-map (kbd "C-x v t") 'git-gutter+-stage-hunks)
-     (define-key git-gutter+-mode-map (kbd "C-x v c") 'git-gutter+-commit)
-     (define-key git-gutter+-mode-map (kbd "C-x v C") 'git-gutter+-stage-and-commit)))
+(use-package projectile
+  :config
+  (setq projectile-project-search-path '("~/headspace/" "~/work/" ))
+  (projectile-discover-projects-in-search-path)
+  :bind
+  ("C-c pp" . projectile-switch-project))
 
-;; elpy requirements
-(add-to-list 'load-path "~/.emacs.d/external/emacs-ctable")
-(add-to-list 'load-path "~/.emacs.d/external/emacs-deferred")
-(add-to-list 'load-path "~/.emacs.d/external/emacs-epc")
-(add-to-list 'load-path "~/.emacs.d/external/popup-el")
-(add-to-list 'load-path "~/.emacs.d/external/emacs-python-environment")
-(add-to-list 'load-path "~/.emacs.d/external/company-mode")
 
-(require 'company)
-(setq company-idle-delay 0.3)
-(setq company-tooltip-limit 20)
-(setq company-minimum-prefix-length 2)
-(setq company-echo-delay 0)
-(setq company-auto-complete nil)
-(global-company-mode 1)
-(add-to-list 'company-backends 'company-dabbrev t)
-(add-to-list 'company-backends 'company-ispell t)
-(add-to-list 'company-backends 'company-files t)
-(setq company-backends (remove 'company-ropemacs company-backends))
-;; This enables company completion for org-mode built-in commands and tags.
-(defun my-pcomplete-capf ()
-  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-(add-hook 'org-mode-hook #'my-pcomplete-capf)
 
-(add-to-list 'load-path "~/.emacs.d/external/emacs-jedi")
-(add-to-list 'load-path "~/.emacs.d/external/yasnippet")
-(add-to-list 'load-path "~/.emacs.d/external/Highlight-Indentation-for-Emacs")
-(add-to-list 'load-path "~/.emacs.d/external/find-file-in-project")
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+(use-package lsp-ui
+  :commands lsp-ui-mode)
 
-(require 'find-file-in-project)
-(global-set-key (kbd "C-x f") 'find-file-in-project)
+;; python
+(use-package lsp-pyright
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
 
-(add-to-list 'load-path "~/.emacs.d/external/idomenu")
-(autoload 'idomenu "idomenu" nil t)
+(use-package magit
+  :bind
+  ("C-x g" . magit-status))
 
-(add-to-list 'load-path "~/.emacs.d/external/iedit")
-(require 'iedit)
-(add-to-list 'load-path "~/.emacs.d/external/nosemacs")
-(add-to-list 'load-path "~/.emacs.d/external/pyvenv")
+(use-package git-gutter)
 
-;; elpy
-(add-to-list 'load-path "~/.emacs.d/external/elpy")
-(require 'elpy)
-(elpy-enable)
-(elpy-use-ipython)
-(setq elpy-rpc-python-command "python2.7")
+(use-package quelpa-use-package)
+(use-package copilot
+  :quelpa (copilot :fetcher github :repo "zerolfx/copilot.el"
+                   :files ("*.el" "dist"))
+  :init
+  ;; accept completion from copilot and fallback to company
+  (defun my-tab ()
+    (interactive)
+    (or (copilot-accept-completion)
+        (corfu-complete)))
 
-;; deft
-(add-to-list 'load-path "~/.emacs.d/external/deft")
-(setq deft-extension "org")
-(setq deft-text-mode 'org-mode)
-(setq deft-use-filename-as-title t)
-(setq deft-auto-save-interval 10.0)
-(require 'deft)
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-mode-map
+              ("<tab>" . 'copilot-accept-completion)
+              ))
 
-;; deft
-(add-to-list 'load-path "~/.emacs.d/external/xclip")
-(require 'xclip)
+(use-package markdown-mode
+  :config
+  (setq markdown-command "pandoc -f markdown -t html -s --mathjax --highlight-style pygments"))
 
-;; mail
-(when (eq system-type 'gnu/linux)
-  (load-library "mail"))
-
-;; yaml
-(add-to-list 'load-path "~/.emacs.d/external/yaml-mode")
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
-
-;; eww lnum
-(add-to-list 'load-path "~/.emacs.d/external/eww-lnum")
-(require 'eww-lnum)
-(eval-after-load "eww"
-  '(progn (define-key eww-mode-map "f" 'eww-lnum-follow)
-          (define-key eww-mode-map "F" 'eww-lnum-universal)))
-
-;; restclient
-(add-to-list 'load-path "~/.emacs.d/external/json-reformat")
-(add-to-list 'load-path "~/.emacs.d/external/restclient")
-(require 'restclient)
-
-;; plantuml
-(add-to-list 'load-path "~/.emacs.d/external/plantuml-mode")
-(require 'plantuml-mode)
-
-;; clojure
-(require 'queue)
-(add-to-list 'load-path "~/.emacs.d/external/epl")
-(require 'epl)
-(add-to-list 'load-path "~/.emacs.d/external/pkg-info")
-(require 'pkg-info)
-(add-to-list 'load-path "~/.emacs.d/external/dash")
-(require 'dash)
-(add-to-list 'load-path "~/.emacs.d/external/clojure-mode")
-(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
-(add-to-list 'load-path "~/.emacs.d/external/cider")
-(require 'cider)
-
-;; haskell
-(add-to-list 'load-path "~/.emacs.d/external/haskell-mode")
-(require 'haskell-mode)
-(require 'haskell-font-lock)
-(require 'haskell-indentation)
-(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(use-package deft
+  :config
+  (setq deft-directory "/Users/cameronlopez/Library/Mobile Documents/iCloud~md~obsidian/Documents/cameron")
+  (setq deft-extension "md")
+  (setq deft-text-mode 'markdown-mode)
+  (setq deft-use-filename-as-title t)
+  (setq deft-auto-save-interval 10.0)
+  (setq deft-recursive t)
+  ;; ignore history directory in headspace dir
+  (setq deft-recursive-ignore-dir-regexp "\\(?:\\.\\|\\.\\.\\|history\\)\\'")
+)
