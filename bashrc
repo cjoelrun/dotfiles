@@ -92,3 +92,4 @@ export SDKMAN_DIR="/home/cameron/.sdkman"
 if [[ -f $TMPDIR/ginger-cli.sh ]]; then
     source $TMPDIR/ginger-cli.sh
 fi
+. "$HOME/.cargo/env"

@@ -1,0 +1,75 @@
+# Setup yabai scripting additions
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+# Set the number of spaces
+DESIRED_SPACES=6
+# Destroy all spaces greater than the desired scaces
+for _ in $(yabai -m query --spaces | jq ".[].index | select(. > ${DESIRED_SPACES} - 1)"); do
+  yabai -m space --destroy $((${DESIRED_SPACES} + 1))
+done
+
+# Function to create a space
+function setup_space {
+  local idx="$1"
+  local name="$2"
+  local space=
+  echo "setup space $idx : $name"
+
+  space=$(yabai -m query --spaces --space "$idx")
+  if [ -z "$space" ]; then
+    yabai -m space --create
+  fi
+
+  yabai -m space "$idx" --label "$name"
+}
+setup_space 1 web
+setup_space 2 code
+setup_space 3 music
+setup_space 4 communication
+setup_space 5 misc
+setup_space 6 entertainment
+setup_space 7 free
+
+# Set the layout and padding
+yabai -m config layout bsp
+yabai -m config top_padding 0
+yabai -m config bottom_padding 0
+yabai -m config left_padding 0
+yabai -m config right_padding 0
+yabai -m config window_gap 0
+
+# Setup all the rules
+# browser
+yabai -m rule --add app="Safari" space=1
+yabai -m rule --add app="Brave Browser" space=1
+yabai -m rule --add app="Google Chrome" space=1
+yabai -m rule --add app="Firefox" space=1
+
+# code
+yabai -m rule --add app="Visual Studio Code" space=2
+yabai -m rule --add app="iTerm2" space=2
+yabai -m rule --add app="Xcode" space=2
+
+# music
+yabai -m rule --add app="Music" space=3
+
+# communication
+yabai -m rule --add app="Slack" space=4
+yabai -m rule --add app="Messages" space=4
+yabai -m rule --add app="Mail" space=4
+
+# misc
+yabai -m rule --add app="Finder" space=5
+
+# entertainment
+yabai -m rule --add app="Stremio" space=6
+
+# free
+yabai -m config --space 7 layout float
+yabai -m rule --add app="App Store" space=7
+yabai -m rule --add app="System Preferences" space=7
+yabai -m rule --add app="Calendar" space=7
+yabai -m rule --add app="System Preferences" space=7
+yabai -m rule --add app="Activity Monitor" space=7
+yabai -m rule --add app="Bitwarden" space=7

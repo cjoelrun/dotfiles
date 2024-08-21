@@ -52,3 +52,9 @@ export PATH="$(go env GOPATH)/bin:$PATH"
 
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+
+cd_gi() {
+  cd $CODE_PATH$1
+}
+# Created by `pipx` on 2024-07-28 00:45:29
+export PATH="$PATH:/Users/cameronlopez/.local/bin"

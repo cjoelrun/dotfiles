@@ -1,0 +1,31 @@
+# Spaces:  CMD + [NUM]
+# web
+cmd - 1 : yabai -m space --focus 1 && \
+open -a /Applications/Brave\ Browser.app
+
+# code
+cmd - 2 : yabai -m space --focus 2 && \
+open -a /Applications/iTerm.app
+
+# music
+cmd - 3 : yabai -m space --focus 3 && \
+open -a /System/Applications/Music.app
+
+# communication
+cmd - 4 : yabai -m space --focus 4 && \
+open -a /System/Applications/Messages.app && \
+open -a /System/Applications/Mail.app
+
+# misc
+cmd - 5 : yabai -m space --focus 5 && \
+open -a /System/Library/CoreServices/Finder.app
+
+# entertainment
+cmd - 6 : yabai -m space --focus 6 && \
+open -a /Applications/Stremio.app
+
+# free
+cmd - 9 : yabai -m space --focus 7
+
+# Reload yabai and skhd
+shift + cmd - r : yabai --restart-service && skhd -rc

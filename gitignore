@@ -18,3 +18,4 @@ tramp
 .emacs.d/eshell
 .emacs.d/thumbs
 .emacs.d/url
+.aider*

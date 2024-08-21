@@ -153,7 +153,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(modus-operandi-theme deft exec-path-from-shell pbcopy git-gutter magit projectile lsp-ui lsp-mode use-package tern rjsx-mode org markdown-mode jsx-mode import-js groovy-mode graphql-mode f dracula-theme company cider async)))
+   '(gptel mermaid-mode lsp-tailwindcss dockerfile-mode go-mode deft exec-path-from-shell pbcopy git-gutter magit projectile lsp-ui lsp-mode use-package tern rjsx-mode org markdown-mode jsx-mode import-js groovy-mode graphql-mode f dracula-theme company cider async)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

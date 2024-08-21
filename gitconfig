@@ -21,3 +21,5 @@
     sslVerify = false
 [credential]
     helper = store
+[github]
+    user = cjoelrun
