@@ -59,7 +59,8 @@
 (use-package projectile
   :ensure t
   :config
-  (setq projectile-project-search-path '("~/headspace/" "~/work/" "~/work/womoji" ))
+  (setq projectile-use-git-grep t)
+  (setq projectile-project-search-path '("~/work/"))
   (projectile-discover-projects-in-search-path)
   (add-to-list 'projectile-globally-ignored-directories "node_modules")
   :bind
@@ -93,15 +94,30 @@
   :ensure t
   :after lsp-mode
   :commands dap-debug
-  :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode))
+  :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode) (rust-mode . dap-ui-mode) (rust-mode . dap-mode))
   :config
+  ;; python
   (require 'dap-python)
   (setq dap-python-debugger 'debugpy)
   (defun dap-python--pyenv-executable-find (command)
     (with-venv (executable-find "python")))
-
   (add-hook 'dap-stopped-hook
-            (lambda (arg) (call-interactively #'dap-hydra))))
+            (lambda (arg) (call-interactively #'dap-hydra)))
+  ;; rust doesn't work
+  ;; https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb
+  ;; (require 'dap-codelldb)
+  ;; (require 'dap-gdb-lldb)
+  ;; (require 'dap-cpptools)
+  ;; (dap-gdb-lldb-setup)
+  ;; (dap-register-debug-template "Rust::LLDB Run Configuration"
+  ;;                              (list :type "lldb"
+  ;;                                  :request "launch"
+  ;;                                  :name "LLDB::Run"
+  ;;                          :gdbpath "rust-lldb"
+  ;;                                  :target nil
+  ;;                                  :cwd nil))
+  )
+
 
 ;; python
 (use-package lsp-pyright
@@ -133,12 +149,11 @@
   :ensure
   :config
   (setq deft-directory "/Users/cameronlopez/Library/Mobile Documents/iCloud~md~obsidian/Documents/cameron")
-  (setq deft-text-mode 'markdown-mode)
+  (setq deft-text-mode 'org-mode)
   (setq deft-use-filename-as-title t)
   (setq deft-auto-save-interval 10.0)
   (setq deft-recursive t)
-  (setq deft-default-extension "md")
-  ;; ignore history directory in headspace dir
+  (setq deft-default-extension "org")
   (setq deft-recursive-ignore-dir-regexp "\\(?:\\.\\|\\.\\.\\|history\\)\\'")
   )
 
@@ -167,10 +182,13 @@
   :config (setq web-mode-code-indent-offset 2))
 
 (use-package rust-mode
+  :ensure t
   :hook
   (rust-mode . lsp-deferred)
   :config
-  (setq rust-format-on-save t))
+  (setq rust-format-on-save t)
+  (setenv "RUST_LOG_SPAN_EVENTS" "full")
+  (setenv "RUST_BACKTRACE" "1"))
 
 (use-package lsp-sourcekit
   :after lsp-mode
@@ -196,4 +214,38 @@
 ;; gptel
 (use-package gptel
   :config
-  (setq gptel-default-mode 'org-mode))
+  (setq gptel-default-mode 'org-mode)
+  (setq gptel-model "gpt-4o"))
+
+;; Color cargo output
+(use-package ansi-color
+  :ensure t
+  :hook (compilation-filter . ansi-color-compilation-filter))
+
+(use-package protobuf-mode
+  :ensure t)
+
+;; straight.el stuff
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+
+(use-package aider
+  :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
+  :config
+  (setq aider-args '("--model" "gpt-4o-2024-05-13"))
+  (global-set-key (kbd "C-c a") 'aider-transient-menu))

@@ -35,16 +35,6 @@ else
     echo "No npm token found in .npmrc file."
 fi
 
-if [[ -f $TMPDIR/ginger-cli.sh ]]; then
-    source $TMPDIR/ginger-cli.sh
-fi
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
 # This is an example, fill in your own Role here
 export TERRAFORM_EXEC_ROLE=TerraformState
 export TF_VAR_terraform_exec_role=${TERRAFORM_EXEC_ROLE}
@@ -56,5 +46,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 cd_gi() {
   cd $CODE_PATH$1
 }
-# Created by `pipx` on 2024-07-28 00:45:29
+
+source $HOME/.secrets
+# Created by `pipx` on 2024-11-21 04:12:52
 export PATH="$PATH:/Users/cameronlopez/.local/bin"
