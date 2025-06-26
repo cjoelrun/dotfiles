@@ -1,32 +1,52 @@
+;; straight.el setup - do this FIRST
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+
+;; Configure use-package to use straight.el by default
+(setq straight-use-package-by-default t
+      use-package-expand-minimally t)
+
+;; Only use package.el for packages that require it
 (require 'package)
 (add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-(setq use-package-always-ensure t
-      use-package-expand-minimally t)
-
-(unless (package-installed-p 'use-package)
-  ;; (package-refresh-contents)
-  (package-install 'use-package))
-
 (use-package auto-package-update
-  :ensure t
+  :ensure t  ;; keep this one with package.el for auto-update functionality
   :config
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
 (use-package counsel
-  :ensure t
   :config
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
   (ivy-mode 1))
 
+(use-package transient)
+
 (use-package magit
-  :ensure t
   :bind
-  ("C-x g" . magit-status))
+  ("C-x g" . magit-status)
+  :config
+  ;; Remove M-p binding to avoid conflict with projectile
+  (define-key magit-mode-map (kbd "M-p") nil))
 
 (use-package forge
   :ensure t
@@ -125,19 +145,19 @@
                          (require 'lsp-pyright)
                          (lsp-deferred))))
 
-(use-package quelpa-use-package)
-(use-package copilot
-  :diminish
-  :quelpa (copilot :fetcher github :repo "zerolfx/copilot.el"
-                   :files ("*.el" "dist"))
-  :init
-  (defun my-copilot-complete ()
-    (interactive)
-    (or (copilot-accept-completion)
-        (move-end-of-line nil)))
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-mode-map
-              ("C-e" . 'my-copilot-complete)))
+;; (use-package quelpa-use-package)
+;; (use-package copilot
+;;   :diminish
+;;   :quelpa (copilot :fetcher github :repo "zerolfx/copilot.el"
+;;                    :files ("*.el" "dist"))
+;;   :init
+;;   (defun my-copilot-complete ()
+;;     (interactive)
+;;     (or (copilot-accept-completion)
+;;         (move-end-of-line nil)))
+;;   :hook (prog-mode . copilot-mode)
+;;   :bind (:map copilot-mode-map
+;;               ("C-e" . 'my-copilot-complete)))
 
 (use-package markdown-mode
   :config
@@ -225,27 +245,23 @@
 (use-package protobuf-mode
   :ensure t)
 
-;; straight.el stuff
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+;; straight.el managed packages
 
-(straight-use-package 'use-package)
 
-(use-package aider
-  :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
+
+
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
   :config
-  (setq aider-args '("--model" "gpt-4o-2024-05-13"))
-  (global-set-key (kbd "C-c a") 'aider-transient-menu))
+  (setq swift-config
+      (make-treesit-auto-recipe
+       :lang 'swift
+       :ts-mode 'swift-ts-mode
+       :remap '(swift-mode)
+       :url "https://github.com/alex-pinkus/tree-sitter-swift"
+       :revision "master"
+       :ext "\\.swift\\'"))
+  (add-to-list 'treesit-auto-recipe-list swift-config)
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
