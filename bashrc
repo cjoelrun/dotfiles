@@ -38,6 +38,9 @@ export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
 
 alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 
+# Alias for Claude CLI with named conversations
+alias claude='claude-named'
+
 export JAVA_HOME=$(/usr/libexec/java_home)
 
 export PROJECT_HOME=$HOME/.projects
@@ -58,3 +61,6 @@ export SDKMAN_DIR="/home/cameron/.sdkman"
 [[ -s "/home/cameron/.sdkman/bin/sdkman-init.sh" ]] && source "/home/cameron/.sdkman/bin/sdkman-init.sh"
 
 . "$HOME/.cargo/env"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/cameronlopez/.lmstudio/bin"

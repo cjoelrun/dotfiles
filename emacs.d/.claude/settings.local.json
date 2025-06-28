@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "WebFetch(domain:emacs.stackexchange.com)"
+    ],
+    "deny": []
+  }
+}

@@ -39,9 +39,26 @@
   (setq enable-recursive-minibuffers t)
   (ivy-mode 1))
 
-(use-package transient)
+;; Ensure seq is available (required by transient)
+(require 'seq)
+
+;; Load transient before magit to ensure compatibility
+(use-package transient
+  :demand t  ;; Force immediate loading
+  :init
+  (setq transient-display-buffer-action '(display-buffer-below-selected))
+  :config
+  ;; Add the lisp subdirectory to load-path if needed
+  (let ((transient-lisp-dir (expand-file-name "straight/repos/transient/lisp" user-emacs-directory)))
+    (when (file-directory-p transient-lisp-dir)
+      (add-to-list 'load-path transient-lisp-dir)))
+  (require 'transient)
+  ;; Ensure transient is fully loaded
+  (unless (fboundp 'transient-prefix-object)
+    (error "transient-prefix-object is not defined - transient may not be properly installed")))  ;; Explicitly require to ensure all functions are available
 
 (use-package magit
+  :after transient  ;; Ensure transient is loaded first
   :bind
   ("C-x g" . magit-status)
   :config
@@ -49,36 +66,31 @@
   (define-key magit-mode-map (kbd "M-p") nil))
 
 (use-package forge
-  :ensure t
   :after magit
   :config
-    (setq auth-sources '("~/.authinfo"))
+  (setq auth-sources '("~/.authinfo"))
   )
 
 (use-package git-gutter
-  :ensure t
   :bind
   ("C-x v r" . git-gutter:revert-hunk)
   ("C-x v n" . git-gutter:next-hunk)
   ("C-x v p" . git-gutter:previous-hunk))
 
 (use-package avy
-  :ensure t
   :bind
   ("M-J" . avy-goto-char-2)
   ("M-L" . avy-goto-line))
 
 (use-package modus-themes
-  :ensure t
   :config
   (load-theme 'modus-vivendi t))
 
-(use-package ag
-    :ensure t)
+(use-package ag)
 
 (use-package projectile
-  :ensure t
   :config
+  (setq projectile-enable-caching nil)  ;; Disable caching to always find new files
   (setq projectile-use-git-grep t)
   (setq projectile-project-search-path '("~/work/"))
   (projectile-discover-projects-in-search-path)
@@ -92,7 +104,15 @@
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
-  :commands lsp)
+  :commands lsp
+  :hook
+  (python-mode . lsp-deferred)
+  (rust-mode . lsp-deferred)
+  (typescript-mode . lsp-deferred)
+  (typescript-tsx-mode . lsp-deferred)
+  (typescript-ts-mode . lsp-deferred)
+  (typescript-ts-mode . jest-test-mode)
+  )
 
 (use-package lsp-ui
   :hook ((lsp-mode . lsp-ui-mode))
@@ -104,14 +124,11 @@
               ("C-c m" . lsp-ui-imenu)))
 
 ;; add company mode for lsp mode
-(use-package company
-  :ensure t)
+(use-package company)
 
-(use-package which-key
-  :ensure t)
+(use-package which-key)
 
 (use-package dap-mode
-  :ensure t
   :after lsp-mode
   :commands dap-debug
   :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode) (rust-mode . dap-ui-mode) (rust-mode . dap-mode))
@@ -166,7 +183,6 @@
   (define-key markdown-mode-map (kbd "M-p") nil))
 
 (use-package deft
-  :ensure
   :config
   (setq deft-directory "/Users/cameronlopez/Library/Mobile Documents/iCloud~md~obsidian/Documents/cameron")
   (setq deft-text-mode 'org-mode)
@@ -202,7 +218,6 @@
   :config (setq web-mode-code-indent-offset 2))
 
 (use-package rust-mode
-  :ensure t
   :hook
   (rust-mode . lsp-deferred)
   :config
@@ -239,11 +254,9 @@
 
 ;; Color cargo output
 (use-package ansi-color
-  :ensure t
   :hook (compilation-filter . ansi-color-compilation-filter))
 
-(use-package protobuf-mode
-  :ensure t)
+(use-package protobuf-mode)
 
 ;; straight.el managed packages
 

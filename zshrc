@@ -50,3 +50,12 @@ cd_gi() {
 source $HOME/.secrets
 # Created by `pipx` on 2024-11-21 04:12:52
 export PATH="$PATH:/Users/cameronlopez/.local/bin"
+
+export PATH=/home/$USER/.fnm:$PATH
+eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+
+# Alias for Claude CLI with named conversations
+alias claude='claude-named'
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/cameronlopez/.lmstudio/bin"

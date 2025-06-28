@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Get the current directory name
+DIR_NAME=$(basename "$PWD")
+
+# Set the process title for tmux
+printf "\033]0;claude:$DIR_NAME\007"
+
+# If in tmux, rename the pane
+if [ -n "$TMUX" ]; then
+    tmux rename-window "claude:$DIR_NAME"
+fi
+
+# Find the actual claude binary (not the alias)
+CLAUDE_BIN=$(type -a claude | grep -v "aliased" | head -n1 | awk '{print $3}')
+
+# Run claude with the custom process name
+exec -a "claude:$DIR_NAME" node "$CLAUDE_BIN" "$@"
