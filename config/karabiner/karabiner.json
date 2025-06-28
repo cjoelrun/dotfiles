@@ -6,6 +6,7 @@
                 "rules": [
                     {
                         "description": "Emacs key bindings [C-x key strokes] (rev 2)",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
