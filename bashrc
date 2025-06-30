@@ -41,11 +41,11 @@ alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 # Alias for Claude CLI with named conversations
 alias claude='claude-named'
 
-export JAVA_HOME=$(/usr/libexec/java_home)
+# export JAVA_HOME=$(/usr/libexec/java_home)  # macOS-specific, commented out on Linux
 
 export PROJECT_HOME=$HOME/.projects
 # source $HOME/.dvm/dvm.sh
-source $HOME/.secrets
+[ -f $HOME/.secrets ] && source $HOME/.secrets
 
 export REACT_EDITOR="emacs -q"
 
@@ -60,7 +60,4 @@ export NVM_DIR="/Users/came5758/.nvm"
 export SDKMAN_DIR="/home/cameron/.sdkman"
 [[ -s "/home/cameron/.sdkman/bin/sdkman-init.sh" ]] && source "/home/cameron/.sdkman/bin/sdkman-init.sh"
 
-. "$HOME/.cargo/env"
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/cameronlopez/.lmstudio/bin"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

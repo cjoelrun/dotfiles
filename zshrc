@@ -23,22 +23,24 @@ export PATH="$HOME/.yarn/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
 
-NPM_TOKEN_LINE=$(grep -E '^//registry.npmjs.org/:_authToken=' $HOME/.npmrc)
-
-if [ -n "$NPM_TOKEN_LINE" ]; then
-    # Extract the token from the line
-    NPM_TOKEN=$(echo $NPM_TOKEN_LINE | sed 's|^//registry.npmjs.org/:_authToken=||')
-
-    # Export the token as an environment variable
-    export NPM_TOKEN
-else
-    echo "No npm token found in .npmrc file."
+if [ -f "$HOME/.npmrc" ]; then
+    NPM_TOKEN_LINE=$(grep -E '^//registry.npmjs.org/:_authToken=' $HOME/.npmrc)
+    
+    if [ -n "$NPM_TOKEN_LINE" ]; then
+        # Extract the token from the line
+        NPM_TOKEN=$(echo $NPM_TOKEN_LINE | sed 's|^//registry.npmjs.org/:_authToken=||')
+        
+        # Export the token as an environment variable
+        export NPM_TOKEN
+    fi
 fi
 
 # This is an example, fill in your own Role here
 export TERRAFORM_EXEC_ROLE=TerraformState
 export TF_VAR_terraform_exec_role=${TERRAFORM_EXEC_ROLE}
-export PATH="$(go env GOPATH)/bin:$PATH"
+if command -v go &> /dev/null; then
+    export PATH="$(go env GOPATH)/bin:$PATH"
+fi
 
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -47,7 +49,7 @@ cd_gi() {
   cd $CODE_PATH$1
 }
 
-source $HOME/.secrets
+[ -f $HOME/.secrets ] && source $HOME/.secrets
 # Created by `pipx` on 2024-11-21 04:12:52
 export PATH="$PATH:/Users/cameronlopez/.local/bin"
 

@@ -1,6 +1,6 @@
 PATH="/usr/local/heroku/bin:$PATH"
 
-source $HOME/.secrets
+[ -f $HOME/.secrets ] && source $HOME/.secrets
 
 #THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
 [[ -s "/Users/cameron/.gvm/bin/gvm-init.sh" ]] && source "/Users/cameron/.gvm/bin/gvm-init.sh"
@@ -15,5 +15,5 @@ export SDKMAN_DIR="/home/cameron/.sdkman"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 . "$HOME/.rye/env"
