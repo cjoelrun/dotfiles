@@ -104,13 +104,15 @@
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-log-io nil) ; Disable verbose logging
+  (setq lsp-file-watch-threshold 1000) ; Reduce file watching limit
   :commands lsp
   :hook
   (python-mode . lsp-deferred)
   (rust-mode . lsp-deferred)
   (typescript-mode . lsp-deferred)
-  (typescript-tsx-mode . lsp-deferred)
   (typescript-ts-mode . lsp-deferred)
+  (tsx-ts-mode . lsp-deferred)
   (typescript-ts-mode . jest-test-mode)
   )
 
@@ -215,7 +217,9 @@
          ("\\.twig\\'" . web-mode)
          ("\\.vue\\'" . web-mode))
   ;; indent ts and js files with 2 spaces)
-  :config (setq web-mode-code-indent-offset 2))
+  :config 
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-content-types-alist '(("tsx" . "\\.tsx\\'"))))
 
 (use-package rust-mode
   :hook
@@ -246,6 +250,18 @@
 ;; LSP for tailwind
 (use-package lsp-tailwindcss)
 
+;; Ensure TypeScript LSP is configured and force it to start
+(with-eval-after-load 'lsp-mode
+  (require 'lsp-javascript)
+  (setq lsp-disabled-clients '())  ; Ensure no clients are disabled
+  (setq lsp-enabled-clients '(ts-ls tailwindcss))  ; Explicitly enable both servers
+  ;; Force TypeScript LSP for tsx-ts-mode
+  (add-to-list 'lsp-language-id-configuration '(tsx-ts-mode . "typescriptreact"))
+  ;; Help LSP find project roots with tsconfig.json
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\cdk\\.out\\'")
+  (setq lsp-clients-typescript-prefer-use-project-ts-server t)
+  )
+
 ;; gptel
 (use-package gptel
   :config
@@ -260,8 +276,23 @@
 
 ;; straight.el managed packages
 
+;; Terminal emulator required for claude-code-ide
+(use-package vterm
+  :config
+  (setq vterm-max-scrollback 10000))
 
-
+;; Claude Code IDE integration
+(use-package claude-code-ide
+  :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
+  :bind (("C-c c c" . claude-code-ide)
+         ("C-c c r" . claude-code-ide-resume)
+         ("C-c c s" . claude-code-ide-stop)
+         ("C-c c e" . claude-code-ide-send-escape))
+  :config
+  ;; Optional: Customize window placement
+  (setq claude-code-ide-window-placement 'right)
+  ;; Optional: Enable debug logging
+  (setq claude-code-ide-debug nil))
 
 (use-package treesit-auto
   :custom

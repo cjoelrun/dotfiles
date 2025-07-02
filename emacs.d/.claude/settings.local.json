@@ -5,7 +5,8 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(rg:*)",
-      "WebFetch(domain:emacs.stackexchange.com)"
+      "WebFetch(domain:emacs.stackexchange.com)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": []
   }
