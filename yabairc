@@ -3,10 +3,10 @@ yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
 
 # Set the number of spaces
-DESIRED_SPACES=6
-# Destroy all spaces greater than the desired scaces
-for _ in $(yabai -m query --spaces | jq ".[].index | select(. > ${DESIRED_SPACES} - 1)"); do
-  yabai -m space --destroy $((${DESIRED_SPACES} + 1))
+DESIRED_SPACES=8
+# Destroy all spaces greater than the desired spaces
+for idx in $(yabai -m query --spaces | jq ".[].index | select(. > ${DESIRED_SPACES})"); do
+  yabai -m space --destroy $idx
 done
 
 # Function to create a space
@@ -26,10 +26,11 @@ function setup_space {
 setup_space 1 web
 setup_space 2 code
 setup_space 3 music
-setup_space 4 communication
-setup_space 5 misc
+setup_space 4 misc
+setup_space 5 communication
 setup_space 6 entertainment
-setup_space 7 free
+setup_space 7 work
+setup_space 8 free
 
 # Set the layout and padding
 yabai -m config layout bsp
@@ -54,22 +55,24 @@ yabai -m rule --add app="Xcode" space=2
 # music
 yabai -m rule --add app="Music" space=3
 
-# communication
-yabai -m rule --add app="Slack" space=4
-yabai -m rule --add app="Messages" space=4
-yabai -m rule --add app="Mail" space=4
-
 # misc
-yabai -m rule --add app="Finder" space=5
+yabai -m rule --add app="Finder" space=4
+
+# communication (home)
+yabai -m rule --add app="Messages" space=5
+yabai -m rule --add app="Mail" space=5
+
+# work
+yabai -m rule --add app="Slack" space=7
 
 # entertainment
 yabai -m rule --add app="Stremio" space=6
 
 # free
-yabai -m config --space 7 layout float
-yabai -m rule --add app="App Store" space=7
-yabai -m rule --add app="System Preferences" space=7
-yabai -m rule --add app="Calendar" space=7
-yabai -m rule --add app="System Preferences" space=7
-yabai -m rule --add app="Activity Monitor" space=7
-yabai -m rule --add app="Bitwarden" space=7
+yabai -m config --space 8 layout float
+yabai -m rule --add app="App Store" space=8
+yabai -m rule --add app="System Preferences" space=8
+yabai -m rule --add app="Calendar" space=8
+yabai -m rule --add app="System Preferences" space=8
+yabai -m rule --add app="Activity Monitor" space=8
+yabai -m rule --add app="Bitwarden" space=8

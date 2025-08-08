@@ -39,7 +39,6 @@ export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
 alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 
 # Alias for Claude CLI with named conversations
-alias claude='claude-named'
 
 # export JAVA_HOME=$(/usr/libexec/java_home)  # macOS-specific, commented out on Linux
 

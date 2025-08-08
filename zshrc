@@ -28,11 +28,11 @@ export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
 
 if [ -f "$HOME/.npmrc" ]; then
     NPM_TOKEN_LINE=$(grep -E '^//registry.npmjs.org/:_authToken=' $HOME/.npmrc)
-    
+
     if [ -n "$NPM_TOKEN_LINE" ]; then
         # Extract the token from the line
         NPM_TOKEN=$(echo $NPM_TOKEN_LINE | sed 's|^//registry.npmjs.org/:_authToken=||')
-        
+
         # Export the token as an environment variable
         export NPM_TOKEN
     fi
@@ -48,6 +48,9 @@ fi
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# Add Chromium depot_tools to PATH
+export PATH="/Users/cameronlopez/work/chromium-ios/src/third_party/depot_tools:$PATH"
+
 cd_gi() {
   cd $CODE_PATH$1
 }
@@ -57,10 +60,39 @@ cd_gi() {
 export PATH="$PATH:/Users/cameronlopez/.local/bin"
 
 # FNM (Fast Node Manager) - commented out since not installed
+# Disabled fnm in favor of nvm
 # export PATH=/home/$USER/.fnm:$PATH
 # eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+
+# Load nvm (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Automatically use .nvmrc if it exists
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local nvmrc_path="$(nvm_find_nvmrc)"
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+      nvm use
+    fi
+  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
 
 # Alias for Claude CLI with named conversations
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/cameronlopez/.lmstudio/bin"
+
+# opencode
+export PATH=/Users/cameronlopez/.opencode/bin:$PATH
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"

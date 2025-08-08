@@ -66,6 +66,13 @@
   (global-set-key (kbd "s-=") (text-scale-increase 1))
   (global-set-key (kbd "s--") (text-scale-decrease 1))
   )
+
+;; Terminal-specific mouse configuration (for tmux/iTerm2)
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1)
+  (global-set-key [mouse-4] (lambda () (interactive) (scroll-down 1)))
+  (global-set-key [mouse-5] (lambda () (interactive) (scroll-up 1))))
+
 (global-hl-line-mode)                   ; highlight current line
 
 ;; avoid compiz manager rendering bugs
@@ -138,6 +145,8 @@
 (prefer-coding-system 'utf-8)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
+
+
 (add-to-list 'load-path "~/.emacs.d/external/")
 (load-library "external")
 (when (string-match "apple-darwin" system-configuration)

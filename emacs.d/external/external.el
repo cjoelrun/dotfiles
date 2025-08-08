@@ -92,12 +92,12 @@
   :config
   (setq projectile-enable-caching nil)  ;; Disable caching to always find new files
   (setq projectile-use-git-grep t)
-  (setq projectile-project-search-path '("~/work/"))
+  (setq projectile-project-search-path '("~/work/" "~/work/worktrees/"))
   (projectile-discover-projects-in-search-path)
   (add-to-list 'projectile-globally-ignored-directories "node_modules")
-  :bind
-  ("M-p" . projectile-command-map)
-  )
+  (projectile-mode +1)
+  :bind-keymap
+  ("M-p" . projectile-command-map))
 
 (use-package flycheck)
 
@@ -109,6 +109,7 @@
   :commands lsp
   :hook
   (python-mode . lsp-deferred)
+  (python-ts-mode . lsp-deferred)
   (rust-mode . lsp-deferred)
   (typescript-mode . lsp-deferred)
   (typescript-ts-mode . lsp-deferred)
@@ -133,7 +134,9 @@
 (use-package dap-mode
   :after lsp-mode
   :commands dap-debug
-  :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode) (rust-mode . dap-ui-mode) (rust-mode . dap-mode))
+  :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode) 
+         (python-ts-mode . dap-ui-mode) (python-ts-mode . dap-mode)
+         (rust-mode . dap-ui-mode) (rust-mode . dap-mode))
   :config
   ;; python
   (require 'dap-python)
@@ -158,11 +161,33 @@
   )
 
 
-;; python
-(use-package lsp-pyright
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred))))
+;; python - Manually register pyright to work around installation issues
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection 
+                     (lambda () 
+                       (list "/Users/cameronlopez/Dotfiles/emacs.d/.cache/lsp/npm/pyright/bin/pyright-langserver-lsp")))
+    :activation-fn (lsp-activate-on "python")
+    :server-id 'pyright-manual
+    :priority 10
+    :initialized-fn (lambda (workspace)
+                      (with-lsp-workspace workspace
+                        (lsp--set-configuration 
+                         (lsp-configuration-section "python"))))
+    :notification-handlers (ht ("pyright/beginProgress" #'ignore)
+                               ("pyright/reportProgress" #'ignore)
+                               ("pyright/endProgress" #'ignore)))))
+
+;; Ensure LSP starts with both servers
+(add-hook 'python-mode-hook 
+          (lambda ()
+            (require 'lsp-pyright)
+            (lsp-deferred)))
+(add-hook 'python-ts-mode-hook 
+          (lambda ()
+            (require 'lsp-pyright)
+            (lsp-deferred)))
 
 ;; (use-package quelpa-use-package)
 ;; (use-package copilot
@@ -180,9 +205,19 @@
 
 (use-package markdown-mode
   :config
-  (setq markdown-command "pandoc -f markdown -t html -s --mathjax --highlight-style pygments")
+  ;; Always use pandoc with mermaid support
+  (let ((filter-path (expand-file-name "mermaid-filter.lua" user-emacs-directory))
+        (header-path (expand-file-name "mermaid-header.html" user-emacs-directory)))
+    (setq markdown-command 
+          (format "pandoc -f markdown -t html -s --mathjax --highlight-style pygments --metadata title=Document --lua-filter=%s --include-in-header=%s"
+                  filter-path header-path)))
   ;; fix keybindings for projectile
   (define-key markdown-mode-map (kbd "M-p") nil))
+
+;; Mermaid mode for editing .mmd and .mermaid files
+(use-package mermaid-mode
+  :mode (("\\.mmd\\'" . mermaid-mode)
+         ("\\.mermaid\\'" . mermaid-mode)))
 
 (use-package deft
   :config
@@ -254,9 +289,30 @@
 (with-eval-after-load 'lsp-mode
   (require 'lsp-javascript)
   (setq lsp-disabled-clients '())  ; Ensure no clients are disabled
-  (setq lsp-enabled-clients '(ts-ls tailwindcss))  ; Explicitly enable both servers
+  ;; Remove restrictive client list to allow all language servers
+  ;; (setq lsp-enabled-clients '(ts-ls tailwindcss))  ; Explicitly enable both servers
   ;; Force TypeScript LSP for tsx-ts-mode
   (add-to-list 'lsp-language-id-configuration '(tsx-ts-mode . "typescriptreact"))
+  ;; Add python-ts-mode support
+  (add-to-list 'lsp-language-id-configuration '(python-ts-mode . "python"))
+  ;; Ensure lsp-pyright supports python-ts-mode
+  (with-eval-after-load 'lsp-pyright
+    (lsp-register-client
+     (make-lsp-client :new-connection (lsp-stdio-connection (lambda ()
+                                                               (cons (lsp-package-path 'pyright)
+                                                                     lsp-pyright-extra-args)))
+                      :activation-fn (lsp-activate-on "python" "python-ts")
+                      :priority 3
+                      :server-id 'pyright
+                      :completion-in-comments? t
+                      :initialized-fn (lambda (workspace)
+                                        (with-lsp-workspace workspace
+                                          (lsp--set-configuration (lsp-configuration-section "pyright"))))
+                      :download-server-fn (lambda (_client callback error-callback _update?)
+                                            (lsp-package-ensure 'pyright callback error-callback))
+                      :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
+                                                     ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
+                                                     ("pyright/endProgress" 'lsp-pyright--end-progress-callback)))))
   ;; Help LSP find project roots with tsconfig.json
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\cdk\\.out\\'")
   (setq lsp-clients-typescript-prefer-use-project-ts-server t)
@@ -284,13 +340,27 @@
 ;; Claude Code IDE integration
 (use-package claude-code-ide
   :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
-  :bind (("C-c c c" . claude-code-ide)
+  :bind (("C-c C-'" . claude-code-ide-menu)  ; Main transient menu
+         ("C-c c c" . claude-code-ide)
          ("C-c c r" . claude-code-ide-resume)
          ("C-c c s" . claude-code-ide-stop)
+         ("C-c c p" . claude-code-ide-send-prompt)
+         ("C-c c t" . claude-code-ide-toggle)
+         ("C-c c l" . claude-code-ide-list-sessions)
          ("C-c c e" . claude-code-ide-send-escape))
   :config
-  ;; Optional: Customize window placement
-  (setq claude-code-ide-window-placement 'right)
+  ;; Customize window placement (right side with custom width)
+  (setq claude-code-ide-window-side 'right
+        claude-code-ide-window-width 100
+        claude-code-ide-use-side-window t)
+  
+  ;; Terminal backend (vterm is already installed)
+  (setq claude-code-ide-terminal-backend 'vterm)
+  
+  ;; Focus behavior
+  (setq claude-code-ide-focus-on-open t
+        claude-code-ide-focus-claude-after-ediff nil)
+  
   ;; Optional: Enable debug logging
   (setq claude-code-ide-debug nil))
 

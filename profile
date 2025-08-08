@@ -16,4 +16,4 @@ export SDKMAN_DIR="/home/cameron/.sdkman"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
-. "$HOME/.rye/env"
+[ -f "$HOME/.rye/env" ] && . "$HOME/.rye/env"
