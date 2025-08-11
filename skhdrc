@@ -1,35 +1,31 @@
 # Spaces:  CMD + [NUM]
+
 # web
-cmd - 1 : /opt/homebrew/bin/yabai -m query --spaces --space 1 | /usr/bin/grep -q '"has-focus":true' || /opt/homebrew/bin/yabai -m space --focus 1; \
-    /usr/bin/pgrep -x "Brave Browser" > /dev/null && /opt/homebrew/bin/yabai -m window $(/opt/homebrew/bin/yabai -m query --windows | /usr/bin/jq '.[] | select(.app=="Brave Browser") | .id') --space 1 2>/dev/null || /usr/bin/open -a "/Applications/Brave Browser.app"
+cmd - 1 : source ~/.config/skhd/helpers.sh && focus_space_with_app 1 "Brave Browser" "/Applications/Brave Browser.app"
 
 # code
-cmd - 2 : /opt/homebrew/bin/yabai -m query --spaces --space 2 | /usr/bin/grep -q '"has-focus":true' || /opt/homebrew/bin/yabai -m space --focus 2; \
-    /usr/bin/pgrep -x "iTerm2" > /dev/null && /opt/homebrew/bin/yabai -m window $(/opt/homebrew/bin/yabai -m query --windows | /usr/bin/jq '.[] | select(.app=="iTerm2") | .id') --space 2 2>/dev/null || /usr/bin/open -a "/Applications/iTerm.app"
-
-# music
-cmd - 3 : /opt/homebrew/bin/yabai -m query --spaces --space 3 | /usr/bin/grep -q '"has-focus":true' || /opt/homebrew/bin/yabai -m space --focus 3; \
-    /usr/bin/pgrep -x "Music" > /dev/null && /opt/homebrew/bin/yabai -m window $(/opt/homebrew/bin/yabai -m query --windows | /usr/bin/jq '.[] | select(.app=="Music") | .id') --space 3 2>/dev/null || /usr/bin/open -a "/System/Applications/Music.app"
-
-# misc
-cmd - 4 : /opt/homebrew/bin/yabai -m query --spaces --space 4 | /usr/bin/grep -q '"has-focus":true' || /opt/homebrew/bin/yabai -m space --focus 4; \
-    /usr/bin/pgrep -x "Finder" > /dev/null && /opt/homebrew/bin/yabai -m window $(/opt/homebrew/bin/yabai -m query --windows | /usr/bin/jq '.[] | select(.app=="Finder") | .id') --space 4 2>/dev/null || /usr/bin/open -a "/System/Library/CoreServices/Finder.app"
-
-# communication (home)
-cmd - 5 : /opt/homebrew/bin/yabai -m query --spaces --space 5 | /usr/bin/grep -q '"has-focus":true' || /opt/homebrew/bin/yabai -m space --focus 5; \
-    (/usr/bin/pgrep -x "Messages" > /dev/null && /opt/homebrew/bin/yabai -m window $(/opt/homebrew/bin/yabai -m query --windows | /usr/bin/jq '.[] | select(.app=="Messages") | .id') --space 5 2>/dev/null || /usr/bin/open -a "/System/Applications/Messages.app"); \
-    (/usr/bin/pgrep -x "Mail" > /dev/null && /opt/homebrew/bin/yabai -m window $(/opt/homebrew/bin/yabai -m query --windows | /usr/bin/jq '.[] | select(.app=="Mail") | .id') --space 5 2>/dev/null || /usr/bin/open -a "/System/Applications/Mail.app")
-
-# entertainment
-cmd - 6 : /opt/homebrew/bin/yabai -m query --spaces --space 6 | /usr/bin/grep -q '"has-focus":true' || /opt/homebrew/bin/yabai -m space --focus 6; \
-    /usr/bin/pgrep -x "Stremio" > /dev/null && /opt/homebrew/bin/yabai -m window $(/opt/homebrew/bin/yabai -m query --windows | /usr/bin/jq '.[] | select(.app=="Stremio") | .id') --space 6 2>/dev/null || /usr/bin/open -a "/Applications/Stremio.app"
+cmd - 2 : source ~/.config/skhd/helpers.sh && focus_space_with_app 2 "iTerm2" "/Applications/iTerm.app"
 
 # work
-cmd + shift - 5 : /opt/homebrew/bin/yabai -m query --spaces --space 7 | /usr/bin/grep -q '"has-focus":true' || /opt/homebrew/bin/yabai -m space --focus 7; \
-    /usr/bin/pgrep -x "Slack" > /dev/null && /opt/homebrew/bin/yabai -m window $(/opt/homebrew/bin/yabai -m query --windows | /usr/bin/jq '.[] | select(.app=="Slack") | .id') --space 7 2>/dev/null || /usr/bin/open -a "/Applications/Slack.app"
+cmd - 3 : source ~/.config/skhd/helpers.sh && focus_space_with_app 3 "Slack" "/Applications/Slack.app"
 
-# free
-cmd - 9 : /opt/homebrew/bin/yabai -m query --spaces --space 8 | /usr/bin/grep -q '"has-focus":true' || /opt/homebrew/bin/yabai -m space --focus 8
+# communication (multiple apps)
+cmd - 4 : source ~/.config/skhd/helpers.sh && focus_space_with_apps 4 "Messages:/System/Applications/Messages.app" "Mail:/System/Applications/Mail.app"
+
+# music
+cmd - 5 : source ~/.config/skhd/helpers.sh && focus_space_with_app 5 "Music" "/System/Applications/Music.app"
+
+# claude
+cmd - 6 : source ~/.config/skhd/helpers.sh && focus_space_with_app 6 "Claude" "/Applications/Claude.app"
+
+# misc
+cmd - 7 : source ~/.config/skhd/helpers.sh && focus_space_with_app 7 "Finder" "/System/Library/CoreServices/Finder.app"
+
+# entertainment
+cmd - 8 : source ~/.config/skhd/helpers.sh && focus_space_with_app 8 "Stremio" "/Applications/Stremio.app"
+
+# free (no app association)
+cmd - 9 : /opt/homebrew/bin/yabai -m space --focus 9
 
 # Reload yabai and skhd
 shift + cmd - r : /opt/homebrew/bin/yabai --restart-service && /opt/homebrew/bin/skhd --restart-service
