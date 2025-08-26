@@ -4,9 +4,14 @@
 (setq mac-allow-anti-aliasing t)
 (setq mac-option-modifier 'meta)
 
-;; pbcopy - copy to clipboard
+;; macOS clipboard integration
+;; Use the built-in macOS clipboard support
+(setq select-enable-clipboard t)
+(setq select-enable-primary t)
+
+;; Alternative: pbcopy package (using straight.el)
 (use-package pbcopy
-  :ensure t
+  :straight t
   :config
   (turn-on-pbcopy))
 
