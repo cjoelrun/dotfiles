@@ -67,23 +67,78 @@ install_homebrew() {
     fi
 }
 
+# Install dotfiles Python package
+install_dotfiles_package() {
+    log_info "Installing dotfiles Python package..."
+
+    # Add Python user bin to PATH if not already there
+    PYTHON_USER_BIN="$HOME/Library/Python/3.9/bin"
+    if [[ -d "$PYTHON_USER_BIN" ]] && [[ ":$PATH:" != *":$PYTHON_USER_BIN:"* ]]; then
+        export PATH="$PYTHON_USER_BIN:$PATH"
+        log_info "Added Python user bin to PATH"
+    fi
+
+    if ! command_exists dotfiles; then
+        if command_exists pip3; then
+            pip3 install --user dotfiles
+            # Add to PATH again after installation
+            if [[ -d "$PYTHON_USER_BIN" ]] && [[ ":$PATH:" != *":$PYTHON_USER_BIN:"* ]]; then
+                export PATH="$PYTHON_USER_BIN:$PATH"
+            fi
+            log_success "dotfiles package installed"
+        else
+            log_error "pip3 not found! Cannot install dotfiles package."
+            return 1
+        fi
+    else
+        log_success "dotfiles package already installed"
+    fi
+}
+
 # Setup dotfiles symlinks
 setup_dotfiles() {
     log_info "Setting up dotfiles symlinks..."
 
+    # Ensure Python user bin is in PATH
+    PYTHON_USER_BIN="$HOME/Library/Python/3.9/bin"
+    if [[ -d "$PYTHON_USER_BIN" ]] && [[ ":$PATH:" != *":$PYTHON_USER_BIN:"* ]]; then
+        export PATH="$PYTHON_USER_BIN:$PATH"
+    fi
+
+    # Create .dotfilesrc configuration if it doesn't exist
+    if [[ ! -f "$HOME/.dotfilesrc" ]]; then
+        log_info "Creating .dotfilesrc configuration..."
+        cat > "$HOME/.dotfilesrc" <<EOF
+[dotfiles]
+repository = ~/Dotfiles
+ignore = [
+    '.git',
+    '.gitignore',
+    'README*',
+    '*.md',
+    'bootstrap.sh',
+    'init-osx.sh']
+packages = ['config', 'emacs.d', 'xmonad']
+EOF
+        log_success ".dotfilesrc created"
+    fi
+
     # Check if dotfiles command exists
     if ! command_exists dotfiles; then
         log_error "dotfiles command not found! Please install it first."
-        log_info "You can install it with: brew install dotfiles"
+        log_info "You can install it with: pip3 install dotfiles"
         return 1
     fi
+
+    # List current status
+    dotfiles --list
 
     # Sync all symlinks
     dotfiles --sync --force
 
-    # Check for any issues
-    if dotfiles --check | grep -q "missing\|broken"; then
-        log_warning "Some dotfiles may have issues. Run 'dotfiles --check' to see details."
+    # Check status after sync
+    if dotfiles --list | grep -q "unsynced"; then
+        log_warning "Some dotfiles may not be synced. Run 'dotfiles --list' to see details."
     else
         log_success "All dotfiles symlinks created successfully"
     fi
@@ -138,15 +193,31 @@ setup_karabiner() {
 setup_window_manager() {
     log_info "Setting up yabai and skhd..."
 
-    # Start yabai service
+    # Configure yabai scripting addition if SIP is disabled
     if command_exists yabai; then
-        brew services start yabai
+        # Check if SIP is disabled
+        if csrutil status | grep -q "disabled"; then
+            log_info "Configuring yabai scripting addition..."
+            
+            # Create sudoers entry for passwordless yabai --load-sa
+            local YABAI_PATH=$(which yabai)
+            local YABAI_HASH=$(shasum -a 256 "$YABAI_PATH" | cut -d " " -f 1)
+            local USERNAME=$(whoami)
+            
+            echo "$USERNAME ALL=(root) NOPASSWD: sha256:$YABAI_HASH $YABAI_PATH --load-sa" | sudo tee /private/etc/sudoers.d/yabai > /dev/null
+            log_success "Sudoers configuration for yabai added"
+        else
+            log_warning "SIP is enabled - yabai will have limited functionality"
+        fi
+        
+        # Start yabai service
+        yabai --start-service
         log_success "yabai service started"
     fi
 
     # Start skhd service
     if command_exists skhd; then
-        brew services start skhd
+        skhd --start-service
         log_success "skhd service started"
     fi
 }
@@ -266,6 +337,7 @@ main() {
 
     install_xcode_clt
     install_homebrew
+    install_dotfiles_package
     setup_dotfiles
     install_packages
     apply_macos_defaults
@@ -285,9 +357,9 @@ main() {
     log_info "  - Install any additional apps from the Mac App Store"
     log_info ""
     log_info "Useful dotfiles commands:"
-    log_info "  dotfiles --list     # Show managed files"
+    log_info "  dotfiles --list     # List dotfiles and their sync status"
     log_info "  dotfiles --sync     # Update symlinks"
-    log_info "  dotfiles --check    # Check for issues"
+    log_info "  dotfiles --force    # Force sync, overwriting existing files"
 }
 
 # Run main function

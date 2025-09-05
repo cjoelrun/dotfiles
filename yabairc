@@ -1,31 +1,41 @@
 # Setup yabai scripting additions
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-sudo yabai --load-sa
+# Only load scripting additions if not already loaded (avoids sudo prompts)
+if ! yabai --check-sa 2>/dev/null; then
+  yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+  echo "Run 'sudo yabai --load-sa' manually to enable scripting additions"
+fi
 
 # Set the number of spaces
 DESIRED_SPACES=10
-# Destroy all spaces greater than the desired spaces
-# Skip if query fails
-SPACES_JSON=$(yabai -m query --spaces 2>/dev/null)
-if [[ -n "$SPACES_JSON" ]] && echo "$SPACES_JSON" | jq empty 2>/dev/null; then
-  for idx in $(echo "$SPACES_JSON" | jq ".[].index | select(. > ${DESIRED_SPACES})" 2>/dev/null); do
-    yabai -m space --destroy $idx 2>/dev/null
+
+# Get current number of spaces
+CURRENT_SPACES=$(yabai -m query --spaces | jq 'length' 2>/dev/null || echo 1)
+
+# Create missing spaces if scripting additions are available
+if [[ "$CURRENT_SPACES" -lt "$DESIRED_SPACES" ]]; then
+  echo "Creating spaces: have $CURRENT_SPACES, need $DESIRED_SPACES"
+  for ((i=$CURRENT_SPACES+1; i<=$DESIRED_SPACES; i++)); do
+    if yabai -m space --create 2>/dev/null; then
+      echo "Created space $i"
+    else
+      echo "Failed to create space $i (scripting additions may not be loaded)"
+      break
+    fi
   done
 fi
 
-# Function to create a space
+# Function to setup a space (only if it exists)
 function setup_space {
   local idx="$1"
   local name="$2"
-  local space=
-  echo "setup space $idx : $name"
-
-  space=$(yabai -m query --spaces --space "$idx" 2>/dev/null)
-  if [ -z "$space" ] || [[ "$space" == "[" ]]; then
-    yabai -m space --create 2>/dev/null
+  
+  # Check if space exists before trying to configure it
+  if yabai -m query --spaces --space "$idx" &>/dev/null; then
+    echo "Configuring space $idx : $name"
+    yabai -m space "$idx" --label "$name" 2>/dev/null || true
+  else
+    echo "Space $idx does not exist yet (will be named '$name' when created)"
   fi
-
-  yabai -m space "$idx" --label "$name" 2>/dev/null || true
 }
 setup_space 1 web
 setup_space 2 code
@@ -37,6 +47,9 @@ setup_space 7 claude
 setup_space 8 misc
 setup_space 9 entertainment
 setup_space 10 free
+
+# Enable debug output
+yabai -m config debug_output on
 
 # Set the layout and padding
 yabai -m config layout bsp

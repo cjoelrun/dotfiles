@@ -4,13 +4,8 @@
 # Run with: brew bundle --file=Brewfile
 
 # Taps
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
-tap "homebrew/services"
 tap "bufbuild/buf"
 tap "cargo-lambda/cargo-lambda"
-tap "chiselstrike/tap"
 tap "getsentry/tools"
 tap "koekeishiya/formulae"
 
@@ -33,7 +28,6 @@ brew "llvm"
 brew "go"
 brew "python@3.11"
 brew "ruby"
-brew "r"
 
 # Python Development
 brew "pipx"
@@ -48,7 +42,6 @@ brew "dbmate"
 # Cloud & DevOps
 brew "aws-sam-cli"
 brew "terraform"
-brew "tfenv"
 
 # Container & Virtualization
 brew "colima"
@@ -92,18 +85,18 @@ brew "terminal-notifier"
 brew "watch"
 brew "watchman"
 
+# Window Management
+brew "koekeishiya/formulae/yabai"
+
 # Development Tools
 brew "act"
-brew "ankitpokhrel/jira-cli/jira-cli"
 brew "balena-cli"
 brew "bufbuild/buf/buf"
-brew "chiselstrike/tap/turso"
 brew "cookiecutter"
 brew "dhex"
 brew "getsentry/tools/sentry-wizard"
 brew "gomplate"
 brew "guile"
-brew "jsonschema"
 brew "just"
 brew "koekeishiya/formulae/skhd"
 brew "mvfst"
@@ -119,25 +112,26 @@ brew "yt-dlp"
 brew "zlib"
 
 # Cask Applications (GUI Apps)
-cask "anaconda"
 cask "bitwarden"
-cask "calibre4"
 cask "docker"
-cask "docker-desktop"
 cask "dynamodb-local"
 cask "emacs"
-cask "emacs-app"
 cask "iterm2"
 cask "jet"
 cask "temurin"
 cask "tomatobar"
-brew "transmission-nightly"
-brew "transmission@nightly"
 cask "vlc"
+cask "rectangle"
+cask "brave-browser"
+cask "karabiner-elements"
+cask "stremio"
+cask "slack"
+cask "claude"
+cask "meetingbar"
 
 # Mac App Store Apps (requires 'mas' CLI)
 # Uncomment and add your apps:
-# mas "Xcode", id: 497799835
+mas "Xcode", id: 497799835
 # mas "1Password 7", id: 1333542190
 # mas "Keynote", id: 409183694
 # mas "Numbers", id: 409203825

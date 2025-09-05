@@ -96,3 +96,6 @@ export PATH="$PATH:/Users/cameronlopez/.lmstudio/bin"
 # opencode
 export PATH=/Users/cameronlopez/.opencode/bin:$PATH
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
