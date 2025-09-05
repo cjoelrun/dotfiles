@@ -1,34 +1,37 @@
 # Spaces:  CMD + [NUM]
 
-# web
+# brave
 cmd - 1 : source ~/.config/skhd/helpers.sh && focus_space_with_app 1 "Brave Browser" "/Applications/Brave Browser.app"
 
+# safari
+cmd + shift - 1 : source ~/.config/skhd/helpers.sh && focus_space_with_app 2 "Safari" "/Applications/Safari.app"
+
 # code
-cmd - 2 : source ~/.config/skhd/helpers.sh && focus_space_with_app 2 "iTerm2" "/Applications/iTerm.app"
+cmd - 2 : source ~/.config/skhd/helpers.sh && focus_space_with_app 3 "iTerm2" "/Applications/iTerm.app"
 
 # xcode
-cmd + shift - 2 : source ~/.config/skhd/helpers.sh && focus_space_with_app 3 "Xcode" "/Applications/Xcode.app"
+cmd + shift - 2 : source ~/.config/skhd/helpers.sh && focus_space_with_app 4 "Xcode" "/Applications/Xcode.app"
 
 # work
-cmd - 3 : source ~/.config/skhd/helpers.sh && focus_space_with_app 4 "Slack" "/Applications/Slack.app"
+cmd - 3 : source ~/.config/skhd/helpers.sh && focus_space_with_app 5 "Slack" "/Applications/Slack.app"
 
 # communication (multiple apps)
-cmd - 4 : source ~/.config/skhd/helpers.sh && focus_space_with_apps 5 "Messages:/System/Applications/Messages.app" "Mail:/System/Applications/Mail.app"
+cmd - 4 : source ~/.config/skhd/helpers.sh && focus_space_with_apps 6 "Messages:/System/Applications/Messages.app" "Mail:/System/Applications/Mail.app"
 
 # music
-cmd - 5 : source ~/.config/skhd/helpers.sh && focus_space_with_app 6 "Music" "/System/Applications/Music.app"
+cmd - 5 : source ~/.config/skhd/helpers.sh && focus_space_with_app 7 "Music" "/System/Applications/Music.app"
 
 # claude
-cmd - 6 : source ~/.config/skhd/helpers.sh && focus_space_with_app 7 "Claude" "/Applications/Claude.app"
+cmd - 6 : source ~/.config/skhd/helpers.sh && focus_space_with_app 8 "Claude" "/Applications/Claude.app"
 
 # misc
-cmd - 7 : source ~/.config/skhd/helpers.sh && focus_space_with_app 8 "Finder" "/System/Library/CoreServices/Finder.app"
+cmd - 7 : source ~/.config/skhd/helpers.sh && focus_space_with_app 9 "Finder" "/System/Library/CoreServices/Finder.app"
 
 # entertainment
-cmd - 8 : source ~/.config/skhd/helpers.sh && focus_space_with_app 9 "Stremio" "/Applications/Stremio.app"
+cmd - 8 : source ~/.config/skhd/helpers.sh && focus_space_with_app 10 "Stremio" "/Applications/Stremio.app"
 
 # free (no app association)
-cmd - 9 : yabai -m space --focus 10
+cmd - 9 : yabai -m space --focus 11
 
 # Reload yabai and skhd
 shift + cmd - r : yabai --restart-service && skhd --restart-service

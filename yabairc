@@ -6,7 +6,7 @@ if ! yabai --check-sa 2>/dev/null; then
 fi
 
 # Set the number of spaces
-DESIRED_SPACES=10
+DESIRED_SPACES=11
 
 # Get current number of spaces
 CURRENT_SPACES=$(yabai -m query --spaces | jq 'length' 2>/dev/null || echo 1)
@@ -37,16 +37,17 @@ function setup_space {
     echo "Space $idx does not exist yet (will be named '$name' when created)"
   fi
 }
-setup_space 1 web
-setup_space 2 code
-setup_space 3 xcode
-setup_space 4 work
-setup_space 5 communication
-setup_space 6 music
-setup_space 7 claude
-setup_space 8 misc
-setup_space 9 entertainment
-setup_space 10 free
+setup_space 1 brave
+setup_space 2 safari
+setup_space 3 code
+setup_space 4 xcode
+setup_space 5 work
+setup_space 6 communication
+setup_space 7 music
+setup_space 8 claude
+setup_space 9 misc
+setup_space 10 entertainment
+setup_space 11 free
 
 # Enable debug output
 yabai -m config debug_output on
@@ -60,44 +61,46 @@ yabai -m config right_padding 0
 yabai -m config window_gap 0
 
 # Setup all the rules
-# browser
-yabai -m rule --add app="Safari" space=1
+# brave
 yabai -m rule --add app="Brave Browser" space=1
 yabai -m rule --add app="Google Chrome" space=1
 yabai -m rule --add app="Firefox" space=1
 
+# safari
+yabai -m rule --add app="Safari" space=2
+
 # code
-yabai -m rule --add app="Visual Studio Code" space=2
-yabai -m rule --add app="iTerm2" space=2
+yabai -m rule --add app="Visual Studio Code" space=3
+yabai -m rule --add app="iTerm2" space=3
 
 # xcode
-yabai -m rule --add app="Xcode" space=3
-yabai -m rule --add app="Xcode-beta" space=3
+yabai -m rule --add app="Xcode" space=4
+yabai -m rule --add app="Xcode-beta" space=4
 
 # work
-yabai -m rule --add app="Slack" space=4
+yabai -m rule --add app="Slack" space=5
 
 # communication
-yabai -m rule --add app="Messages" space=5
-yabai -m rule --add app="Mail" space=5
+yabai -m rule --add app="Messages" space=6
+yabai -m rule --add app="Mail" space=6
 
 # music
-yabai -m rule --add app="Music" space=6
+yabai -m rule --add app="Music" space=7
 
 # claude
-yabai -m rule --add app="Claude" space=7
+yabai -m rule --add app="Claude" space=8
 
 # misc
-yabai -m rule --add app="Finder" space=8
+yabai -m rule --add app="Finder" space=9
 
 # entertainment
-yabai -m rule --add app="Stremio" space=9
+yabai -m rule --add app="Stremio" space=10
 
 # free
-yabai -m config --space 10 layout float
-yabai -m rule --add app="App Store" space=10
-yabai -m rule --add app="System Preferences" space=10
-yabai -m rule --add app="Calendar" space=10
-yabai -m rule --add app="System Preferences" space=10
-yabai -m rule --add app="Activity Monitor" space=10
-yabai -m rule --add app="Bitwarden" space=10
+yabai -m config --space 11 layout float
+yabai -m rule --add app="App Store" space=11
+yabai -m rule --add app="System Preferences" space=11
+yabai -m rule --add app="Calendar" space=11
+yabai -m rule --add app="System Preferences" space=11
+yabai -m rule --add app="Activity Monitor" space=11
+yabai -m rule --add app="Bitwarden" space=11

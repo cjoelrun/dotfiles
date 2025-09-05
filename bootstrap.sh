@@ -161,6 +161,15 @@ install_packages() {
 apply_macos_defaults() {
     log_info "Applying macOS system preferences..."
 
+    # Hide desktop icons (files, drives, etc.)
+    defaults write com.apple.finder CreateDesktop -bool false
+    
+    # Dock settings
+    defaults write com.apple.dock orientation -string "left"  # Position dock on left
+    defaults write com.apple.dock autohide -bool true         # Auto-hide the dock
+    defaults write com.apple.dock autohide-delay -float 0     # Remove dock auto-hide delay
+    defaults write com.apple.dock autohide-time-modifier -float 0.5  # Speed up animation
+    
     if [[ -f ".macos" ]]; then
         chmod +x .macos
         ./.macos
@@ -168,6 +177,10 @@ apply_macos_defaults() {
     else
         log_warning ".macos script not found, skipping system preferences"
     fi
+    
+    # Restart Finder and Dock to apply changes
+    killall Finder 2>/dev/null || true
+    killall Dock 2>/dev/null || true
 }
 
 # Setup Karabiner-Elements

@@ -46,6 +46,8 @@ brew "terraform"
 # Container & Virtualization
 brew "colima"
 brew "qemu"
+brew "docker"
+brew "docker-compose"
 
 # Build & Package Management
 brew "maven"
@@ -113,7 +115,6 @@ brew "zlib"
 
 # Cask Applications (GUI Apps)
 cask "bitwarden"
-cask "docker"
 cask "dynamodb-local"
 cask "emacs"
 cask "iterm2"
@@ -123,6 +124,7 @@ cask "tomatobar"
 cask "vlc"
 cask "rectangle"
 cask "brave-browser"
+cask "google-chrome"
 cask "karabiner-elements"
 cask "stremio"
 cask "slack"
