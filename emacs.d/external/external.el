@@ -71,6 +71,15 @@
   (setq auth-sources '("~/.authinfo"))
   )
 
+(use-package git-link
+  :bind
+  (("C-c g l" . git-link)
+   ("C-c g c" . git-link-commit)
+   ("C-c g h" . git-link-homepage))
+  :config
+  ;; Copy link to kill ring (clipboard)
+  (setq git-link-open-in-browser nil))
+
 (use-package git-gutter
   :bind
   ("C-x v r" . git-gutter:revert-hunk)

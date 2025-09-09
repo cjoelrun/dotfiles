@@ -1,6 +1,12 @@
 # Source common profile configurations
 source $HOME/.profile
 
+# Enable Emacs-style key bindings (for Ctrl+U, Ctrl+K, etc.)
+bindkey -e
+
+# Make Ctrl+U cut from beginning of line to cursor (not whole line)
+bindkey '^U' backward-kill-line
+
 export PROJECT_HOME=$HOME/work
 export JSON_DICTIONARY_REPO=$HOME/.configstore
 
