@@ -104,3 +104,9 @@ yabai -m rule --add app="Calendar" space=11
 yabai -m rule --add app="System Preferences" space=11
 yabai -m rule --add app="Activity Monitor" space=11
 yabai -m rule --add app="Bitwarden" space=11
+
+# PiP windows - float everywhere
+yabai -m rule --add app="Brave Browser" title="Picture in Picture" manage=off
+yabai -m rule --add app="Google Chrome" title="Picture in Picture" manage=off
+yabai -m rule --add app="Safari" title="Picture in Picture" manage=off
+yabai -m rule --add app="Firefox" title="Picture in Picture" manage=off

@@ -105,3 +105,11 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# Colima Docker environment for testcontainers
+if [[ -S "${HOME}/.colima/default/docker.sock" ]]; then
+  export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE="/var/run/docker.sock"
+  export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
+  export TESTCONTAINERS_RYUK_DISABLED="true"
+  export TESTCONTAINERS_HOST_OVERRIDE="localhost"
+fi
+

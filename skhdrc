@@ -1,10 +1,10 @@
 # Spaces:  CMD + [NUM]
 
-# brave
-cmd - 1 : source ~/.config/skhd/helpers.sh && focus_space_with_app 1 "Brave Browser" "/Applications/Brave Browser.app"
+# brave (personal profile on personal machines, catch profile on work machines)
+cmd - 1 : source ~/.config/skhd/helpers.sh && focus_space_with_brave_conditional 1
 
-# safari
-cmd + shift - 1 : source ~/.config/skhd/helpers.sh && focus_space_with_app 2 "Safari" "/Applications/Safari.app"
+# safari (other machines) or brave personal profile (work/catch machines)
+cmd + shift - 1 : source ~/.config/skhd/helpers.sh && focus_space_with_safari_or_brave_personal 2
 
 # code
 cmd - 2 : source ~/.config/skhd/helpers.sh && focus_space_with_app 3 "iTerm2" "/Applications/iTerm.app"
