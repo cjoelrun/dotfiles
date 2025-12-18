@@ -1,7 +1,23 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:support.anthropic.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.stainless.com)",
+      "Bash(mkdir:*)",
+      "WebFetch(domain:apidog.com)",
+      "Bash(nvim:*)",
+      "Bash(brew install:*)",
+      "WebFetch(domain:developers.facebook.com)",
+      "Bash(yabai:*)",
+      "Bash(skhd:*)",
+      "Bash(chmod:*)",
+      "Bash(docker network inspect:*)",
+      "Bash(docker network disconnect:*)",
+      "Bash(defaults read:*)"
     ],
     "deny": []
   }

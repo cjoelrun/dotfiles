@@ -3,7 +3,7 @@
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # Load scripting addition (requires sudoers configuration)
-sudo yabai --load-sa
+sudo yabai --load-sa 2>/dev/null
 
 # Set the number of spaces
 DESIRED_SPACES=11

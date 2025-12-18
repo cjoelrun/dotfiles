@@ -42,20 +42,12 @@
 ;; Ensure seq is available (required by transient)
 (require 'seq)
 
-;; Load transient before magit to ensure compatibility
+;; Load transient before magit - pin to v0.10.0 to avoid cond-let dependency
 (use-package transient
-  :demand t  ;; Force immediate loading
+  :straight (:type git :host github :repo "magit/transient" :tag "v0.10.0")
+  :demand t
   :init
-  (setq transient-display-buffer-action '(display-buffer-below-selected))
-  :config
-  ;; Add the lisp subdirectory to load-path if needed
-  (let ((transient-lisp-dir (expand-file-name "straight/repos/transient/lisp" user-emacs-directory)))
-    (when (file-directory-p transient-lisp-dir)
-      (add-to-list 'load-path transient-lisp-dir)))
-  (require 'transient)
-  ;; Ensure transient is fully loaded
-  (unless (fboundp 'transient-prefix-object)
-    (error "transient-prefix-object is not defined - transient may not be properly installed")))  ;; Explicitly require to ensure all functions are available
+  (setq transient-display-buffer-action '(display-buffer-below-selected)))
 
 (use-package magit
   :after transient  ;; Ensure transient is loaded first
@@ -65,8 +57,12 @@
   ;; Remove M-p binding to avoid conflict with projectile
   (define-key magit-mode-map (kbd "M-p") nil))
 
+;; ghub must be declared explicitly to stay in sync with forge
+(use-package ghub
+  :defer t)
+
 (use-package forge
-  :after magit
+  :after (magit ghub)
   :config
   (setq auth-sources '("~/.authinfo"))
   )
@@ -299,11 +295,44 @@
   (setq lsp-clients-typescript-prefer-use-project-ts-server t)
   )
 
-;; gptel
+;; gptel with OpenRouter (Gemini 2.0 Flash Experimental - Free)
 (use-package gptel
+  :bind (("C-c a r" . gptel-rewrite)
+         ("C-c a m" . gptel-menu))
   :config
   (setq gptel-default-mode 'org-mode)
-  (setq gptel-model "gpt-4o"))
+
+  ;; API key retrieval - stores key securely in ~/.authinfo
+  ;; Add this line to ~/.authinfo: machine openrouter.ai login apikey password YOUR_API_KEY
+  (setq gptel-api-key
+        (lambda ()
+          (auth-source-pick-first-password
+           :host "openrouter.ai")))
+
+  ;; Configure OpenRouter backend with multiple free models
+  (gptel-make-openai "OpenRouter"
+    :host "openrouter.ai"
+    :endpoint "/api/v1/chat/completions"
+    :stream t
+    :key #'gptel-api-key
+    :models '(meta-llama/llama-3.2-3b-instruct:free     ; Free Llama model
+              qwen/qwen-2-7b-instruct:free              ; Free Qwen model
+              google/gemini-2.0-flash-exp:free          ; Free Gemini (rate limited)
+              google/gemini-flash-1.5                   ; Paid Gemini
+              google/gemini-pro-1.5))                   ; Paid Gemini Pro
+
+  ;; Set OpenRouter as default backend with Llama 3.2 (more generous rate limits)
+  (setq gptel-backend (gptel-get-backend "OpenRouter")
+        gptel-model 'meta-llama/llama-3.2-3b-instruct:free))
+
+;; gptel-autocomplete - Inline code completion with ghost text
+(use-package gptel-autocomplete
+  :straight (:type git :host github :repo "JDNdeveloper/gptel-autocomplete")
+  :bind (("C-<tab>" . gptel-complete)              ; Request completion at point
+         ("C-<return>" . gptel-accept-completion)) ; Accept displayed completion
+  :config
+  ;; Configure context window size (characters before/after cursor)
+  (setq gptel-autocomplete-context-size 2000))
 
 ;; Color cargo output
 (use-package ansi-color
