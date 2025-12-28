@@ -12,18 +12,18 @@ MESSAGE=$(echo "$INPUT" | jq -r '.message // empty')
 
 # For Stop events, notify that Claude is done
 if [[ "$HOOK_EVENT" == "Stop" ]]; then
-    osascript -e 'display notification "Task completed" with title "Claude Code" sound name "Glass"'
+    terminal-notifier -title "Claude Code" -message "Task completed" -sound Glass
     exit 0
 fi
 
 # For Notification events, check the message content
 if [[ "$HOOK_EVENT" == "Notification" ]]; then
     if [[ "$MESSAGE" == *"needs your permission"* ]]; then
-        osascript -e 'display notification "Permission needed for tool use" with title "Claude Code" sound name "Ping"'
+        terminal-notifier -title "Claude Code" -message "Permission needed for tool use" -sound Ping
     elif [[ "$MESSAGE" == *"waiting for your input"* ]]; then
-        osascript -e 'display notification "Waiting for your input" with title "Claude Code" sound name "Pop"'
+        terminal-notifier -title "Claude Code" -message "Waiting for your input" -sound Pop
     else
-        osascript -e "display notification \"$MESSAGE\" with title \"Claude Code\""
+        terminal-notifier -title "Claude Code" -message "$MESSAGE"
     fi
 fi
 

@@ -170,30 +170,20 @@
   )
 
 
-;; python - Manually register pyright to work around installation issues
-(with-eval-after-load 'lsp-mode
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-stdio-connection 
-                     (lambda () 
-                       (list "/Users/cameronlopez/Dotfiles/emacs.d/.cache/lsp/npm/pyright/bin/pyright-langserver-lsp")))
-    :activation-fn (lsp-activate-on "python")
-    :server-id 'pyright-manual
-    :priority 10
-    :initialized-fn (lambda (workspace)
-                      (with-lsp-workspace workspace
-                        (lsp--set-configuration 
-                         (lsp-configuration-section "python"))))
-    :notification-handlers (ht ("pyright/beginProgress" #'ignore)
-                               ("pyright/reportProgress" #'ignore)
-                               ("pyright/endProgress" #'ignore)))))
+;; Install lsp-pyright package
+(use-package lsp-pyright
+  :after lsp-mode
+  :config
+  (setq lsp-pyright-use-library-code-for-types t
+        lsp-pyright-auto-search-paths t
+        lsp-pyright-diagnostic-mode "workspace"))
 
-;; Ensure LSP starts with both servers
-(add-hook 'python-mode-hook 
+;; Ensure LSP starts for Python modes
+(add-hook 'python-mode-hook
           (lambda ()
             (require 'lsp-pyright)
             (lsp-deferred)))
-(add-hook 'python-ts-mode-hook 
+(add-hook 'python-ts-mode-hook
           (lambda ()
             (require 'lsp-pyright)
             (lsp-deferred)))
@@ -304,24 +294,6 @@
   (add-to-list 'lsp-language-id-configuration '(tsx-ts-mode . "typescriptreact"))
   ;; Add python-ts-mode support
   (add-to-list 'lsp-language-id-configuration '(python-ts-mode . "python"))
-  ;; Ensure lsp-pyright supports python-ts-mode
-  (with-eval-after-load 'lsp-pyright
-    (lsp-register-client
-     (make-lsp-client :new-connection (lsp-stdio-connection (lambda ()
-                                                               (cons (lsp-package-path 'pyright)
-                                                                     lsp-pyright-extra-args)))
-                      :activation-fn (lsp-activate-on "python" "python-ts")
-                      :priority 3
-                      :server-id 'pyright
-                      :completion-in-comments? t
-                      :initialized-fn (lambda (workspace)
-                                        (with-lsp-workspace workspace
-                                          (lsp--set-configuration (lsp-configuration-section "pyright"))))
-                      :download-server-fn (lambda (_client callback error-callback _update?)
-                                            (lsp-package-ensure 'pyright callback error-callback))
-                      :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
-                                                     ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
-                                                     ("pyright/endProgress" 'lsp-pyright--end-progress-callback)))))
   ;; Help LSP find project roots with tsconfig.json
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\cdk\\.out\\'")
   (setq lsp-clients-typescript-prefer-use-project-ts-server t)

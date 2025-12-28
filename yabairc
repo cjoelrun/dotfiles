@@ -1,9 +1,9 @@
 # Setup yabai scripting additions
-# Only load scripting additions if not already loaded (avoids sudo prompts)
-if ! yabai --check-sa 2>/dev/null; then
-  yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-  echo "Run 'sudo yabai --load-sa' manually to enable scripting additions"
-fi
+# Configure signal to reload scripting addition when Dock restarts
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
+# Load scripting addition (requires sudoers configuration)
+sudo yabai --load-sa
 
 # Set the number of spaces
 DESIRED_SPACES=11

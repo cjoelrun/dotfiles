@@ -58,6 +58,7 @@ brew "fd"
 brew "jq"
 brew "pandoc"
 brew "the_silver_searcher"
+brew "mermaid-cli"
 
 # Network Tools
 brew "caddy"
@@ -79,6 +80,7 @@ brew "imagemagick"
 brew "fish"
 brew "neovim"
 brew "tmux"
+brew "tree-sitter"
 
 # System Utilities
 brew "htop"
@@ -130,11 +132,12 @@ cask "stremio"
 cask "slack"
 cask "claude"
 cask "meetingbar"
+cask "obs"
 
 # Mac App Store Apps (requires 'mas' CLI)
 # Uncomment and add your apps:
 mas "Xcode", id: 497799835
+mas "Numbers", id: 409203825
 # mas "1Password 7", id: 1333542190
 # mas "Keynote", id: 409183694
-# mas "Numbers", id: 409203825
 # mas "Pages", id: 409201541
