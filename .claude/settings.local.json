@@ -17,8 +17,17 @@
       "Bash(chmod:*)",
       "Bash(docker network inspect:*)",
       "Bash(docker network disconnect:*)",
-      "Bash(defaults read:*)"
+      "Bash(defaults read:*)",
+      "WebSearch",
+      "Bash(clawdbot uninstall:*)",
+      "Bash(echo:*)",
+      "Bash(npm rm:*)",
+      "Bash(launchctl list:*)"
     ],
     "deny": []
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "playwright"
+  ]
 }

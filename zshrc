@@ -27,7 +27,7 @@ export SDKMAN_DIR="~/.sdkman"
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
 
-export PATH="/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.1.0/bin/:$PATH"
+export PATH="/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.4.0/bin/:$PATH"
 export PATH="$HOME/.yarn/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
@@ -113,3 +113,8 @@ if [[ -S "${HOME}/.colima/default/docker.sock" ]]; then
   export TESTCONTAINERS_HOST_OVERRIDE="localhost"
 fi
 
+export AWS_PROFILE=cameron-cli
+
+# Quick aliases
+alias t='tmux a || tmux'
+alias w='cd ~/work/womoji && claude'
