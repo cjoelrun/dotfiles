@@ -22,7 +22,9 @@
       "Bash(clawdbot uninstall:*)",
       "Bash(echo:*)",
       "Bash(npm rm:*)",
-      "Bash(launchctl list:*)"
+      "Bash(launchctl list:*)",
+      "Bash(/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli:*)",
+      "Bash(log show --predicate 'subsystem == \"\"\"\"org.pqrs.karabiner\"\"\"\"' --last 1m)"
     ],
     "deny": []
   },
